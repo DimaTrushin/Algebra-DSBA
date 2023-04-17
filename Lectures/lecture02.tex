@@ -1,0 +1,342 @@
+\ProvidesFile{lecture02.tex}[Lecture 2]
+
+
+Now, I want to describe all subgroups of the integers with addition.
+
+\begin{claim}
+\label{claim::Zsubgroups}
+Every subgroup $H$ of $\mathbb Z$, that is $(\mathbb Z, +)$, is of the form $k\mathbb Z$ for some natural $k$.
+\end{claim}
+\begin{proof}
+Let us check that $k \mathbb Z$ is indeed a subgroup for any $k$.
+We need to check three properties of the subgroup.
+First, $k\mathbb Z$ is closed under addition.
+But this is clear by definition.
+Second, the neutral element, which is zero, belongs to $k\mathbb Z$.
+This is also clear since $0 = k \cdot 0$.
+Third, for each $m = kh \in k\mathbb Z$, its inverse $-m= k(-h)$ is also in $\mathbb Z$, and we are done with this part.
+
+Now, let us check that every subgroup $H$ is of the form $k \mathbb Z$.
+If $H$ contains only the neutral element $0$, then $H = 0\mathbb Z$ and we are done.
+Suppose $H$ contains non-zero elements.
+Take an arbitrary non-zero $n \in H$.
+If $n < 0$, then $-n$ must belong to $H$ by definition of a subgroup.
+And hence, we may assume that $H$ contains some positive numbers.
+Let $k$ be the smallest positive number in $H$.
+Let us show that $H = k \mathbb Z$.
+
+First, $H \supseteq k \mathbb Z$.
+Indeed, if $k\in H$, then by definition of a subgroup every ``power'' of $k$ is in $H$.
+For additive notation this means 
+\[
+mk  = \underbrace{k + \ldots + k}_m \in H\;\text{ and }\;(-n)k=\underbrace{(-k) + \ldots + (-k)}_n\in H\; \text{ for any }\;m, n\in \mathbb N
+\]
+Hence, $k\mathbb Z\subseteq H$.
+
+Now, let us show that $H\subseteq k\mathbb Z$.
+If $n\in H$ is an arbitrary element, let us divide $n$ by $k$: $n = q k + r$, where $q\in \mathbb Z$ and $0 \leqslant r < k$.
+We already know that $qk \in k\mathbb Z\subseteq H$, that is $qk \in H$.
+Hence, $r = n - qk \in H$.
+But $r$ is a natural number in $H$ smaller than $k$.
+Since $k$ is the smallest positive in $H$, the only option is $r = 0$.
+Thus, $n = qk\in k\mathbb Z$ and we are done.
+\end{proof}
+
+\begin{claim}
+\label{claim::Znsubgroups}
+Every subgroup $H$ of $\mathbb Z_n$, that is $(\mathbb Z_n, +)$, is of the form $k\mathbb Z_n =\{kh\in \mathbb Z_n \mid h\in \mathbb Z_n\}$ for some positive $k \mid n$.
+\end{claim}
+\begin{proof}
+First, let us check that all numbers divisible by $k$ such that $k\mid n$ form a subgroup in $\mathbb Z_n$.
+First, we need to check that $k\mathbb Z_n$ is closed under addition modulo $n$.
+Suppose $m_1 = k h_1$ and $m_2 = k h_2$ are elements of $k \mathbb Z_n$.
+Then their sum modulo $n$ is a remainder $r$ such that $ m_1+ m_2 = r \pmod{n}$.
+In this case,
+\[
+r = m_1 + m_2 + q n = k h_1 + kh_2 + qn
+\]
+Since $k$ divides $n$ the whole expression above is divisible by $k$.
+Hence $r$ is divisible by $k$.
+The latter means that $k \mathbb Z_n$ is closed under addition modulo $n$.
+Second, we need to check that $k\mathbb Z_n$ contains the neutral element.
+This is clear, since $0 = k \cdot 0\in k\mathbb Z_n$.
+Third, if $m\in k\mathbb Z_n$ is a nonzero element, then its inverse is $n - m$.
+Since $n$ is divisible by $k$, $n-m$ is divisible by $k$.
+Hence, it belongs to $k\mathbb Z_n$.
+In case $m = 0$ its inverse is $0$ and is already in $k \mathbb Z_n$.
+Hence, for each $k\mod n$, $k\mathbb Z_n$ is a subgroup of $\mathbb Z_n$.
+
+Now, let us show, that every subgroup $H$ in $\mathbb Z_n$ coincides with a subgroup of the form $k\mathbb Z_n$ for $k\mid n$.
+The subgroup $H$ must contain the neutral element $0$.
+If this is the only element of $H$, then $H = \{0\} = n \mathbb Z_n$ and we are done.
+So, we may suppose there is a non-zero, and hence positive, element in $H$.
+Let $k$ be the smallest positive element of $H$.
+By definition the cyclic subgroup of $k$, that is $k\mathbb Z_n$, belongs to $H$.
+Thus, we need to show, that $H\subseteq k \mathbb Z_n$ and $k$ divides $n$.
+
+First, let me show that $k$ divides $n$.
+Let us divide $n$ with remainder by $k$, we will get $n = qk + r$, where $0\leqslant r < k$.
+Now, $r = n - q k$, hence $r = -q k \pmod{n}$.
+Since $k\in H$, the latter means that $r$ is also in $H$.
+But this contradicts the choice of $k$ (it was the smallest nonzero integer in $H$).
+Hence, $r$ must be zero, thus $k$ divides $n$.
+Second, let me show that every element of $H$ is in $k\mathbb Z_n$.
+Suppose $h\in H$ is an arbitrary element.
+Let us divide $h$ with remainder by $k$, we will get $h = q k + r$.
+Hence, $r = h - q k$.
+Since $h\in H$ and $k\in H$, the whole expression $h - qk$ is in $H$.
+Hence, $r\in H$.
+Since $k$ was the smallest positive integer of $H$, we must have $r = 0$.
+The latter means that $h$ is divisible by $k$, that is, $h$ belongs to $k\mathbb Z_n$, and we are done.
+\end{proof}
+
+\subsection{Cosets}
+
+Algebra usually tends to study groups using subgroups rather than elements.
+The main tool here is cosets.
+
+\begin{definition}
+Let $G$ be a group, $H\subseteq G$ a subgroup and $g\in G$ an arbitrary element.
+Then the set
+\[
+gH = \{gh\mid h\in H\}
+\]
+is called the left coset of $H$ with respect to $g$.
+In a similar way, we define right cosets.
+The set
+\[
+Hg = \{hg\mid h\in H\}
+\]
+is called the right coset of $H$ with respect to $g$.
+\end{definition}
+
+\begin{remarks}
+\begin{enumerate}
+\item It should be noted that if $G$ is commutative, then there is no difference between left and right cosets for any subgroup $H\subseteq G$.
+
+\item The group $H$ itself is a left coset as well as a right coset.
+Indeed, $H = 1 \cdot H = H \cdot 1$.
+
+\item In general, the left cost $gH$ need not be the same as the right coset $Hg$ as an example below shows.
+\end{enumerate}
+\end{remarks}
+
+
+\begin{examples}
+Here are some examples of cosets.
+\begin{enumerate}
+\item Let $G = (\mathbb Z, +)$ and $H = 2\mathbb Z$ the subgroup of even numbers.
+Then $2\mathbb Z$ and $1 + 2\mathbb Z$ are the only cosets of $H$.
+
+\item Let $G = S_3$ and $H = \langle (1, 2)\rangle$ the cyclic subgroup generated by the cycle $(1,2)$.
+We may list all the elements of $G$ and $H$
+\[
+G = \{1, (1,2), (1, 3), (2, 3), (1, 2, 3), (3, 2, 1)\},\; H = \{1, (1, 2)\}
+\]
+Then there are three different left cosets of $H$
+\[
+H = \{1, (1, 2)\}, \;(1,3)H = \{(1, 3), (1, 2, 3)\},\;(2, 3)H = \{(2, 3), (3,2,1)\}
+\]
+And there are three different right cosets of $H$
+\[
+H =  \{1, (1, 2)\}, \; H(1, 3) = \{(1, 3), (3, 2, 1)\},\; H (2, 3) = \{(2, 3), (1, 2, 3)\}
+\]
+This example shows that $(1, 3) H \neq H (1, 3)$.
+Also, it should be noted that
+\[
+(1, 2)H = H,\; (1, 3)H = (1, 2, 3)H,\; (2, 3)H = (3, 2, 1)H
+\]
+So, cosets with respect to different elements may be the same.
+
+\item Let $G = S_n$ be the group of permutations on $n$ elements and $H = A_n$ be the subgroup of even permutations.
+Then, for any even permutation $\sigma\in A_n$, the set $\sigma A_n$ consists of all even permutations.
+Similarly, for any odd permutation $\sigma\in S_n\subseteq A_n$, the set $\sigma A_n$ consists of all odd permutations.
+Hence, there are only two left cosets of $A_n$
+\[
+A_n\;\text{and}\;(1, 2) A_n
+\]
+In a similar way, we can show that there are only two right cosets of $A_n$
+\[
+A_n\;\text{and}\; A_n(1, 2)
+\]
+Moreover, we have shown that $\sigma A_n = A_n \sigma$ for any $\sigma \in S_n$.
+\end{enumerate}
+\end{examples}
+
+\begin{definition}
+Let $G$ be a group and $H$ its subgroup.
+The subgroup $H$ is normal if its left and right cosets are the same, that is, $gH = Hg$ whenever $g\in G$.
+\end{definition}
+
+\begin{claim}
+\label{claim::normal_crit}
+Let $G$ be a group and $H$ its subgroup.
+Then, the following are equivalent
+\begin{enumerate}
+\item $gH = Hg$ for each $g\in G$.
+
+\item $gHg^{-1} = H$ for each $g\in G$.
+
+\item $gHg^{-1}\subseteq H$ for each $g\in G$.
+\end{enumerate}
+\end{claim}
+\begin{proof}
+(1)$\Leftrightarrow$(2).
+Suppose $gH = Hg$.
+Multiply this on the right by $g^{-1}$ and get $gH g^{-1} = H$.
+And if we are given $g H g^{-1} = H$, multiply this on the right by $g$ and get $gH = Hg$.
+
+(2)$\Leftrightarrow$(3).
+We should show that $gHg^{-1}\subseteq H$ for each $g\in G$ implies  $gHg^{-1} = H$ for each $g\in G$.
+The other implication is clear.
+If  $gHg^{-1}\subseteq H$ for each $g\in G$, then it holds for $g^{-1}$ instead of $g$.
+Thus, $g^{-1}Hg \subseteq H$ for each $g\in G$.
+Multiply this on the left by $g$ and get $Hg \subseteq gH$.
+Then, multiply the latter on the right by $g^{-1}$ and get $H \subseteq gH g^{-1}$.
+Since $g\in G$ was arbitrary we are done.
+
+\end{proof}
+
+\subsection{The Lagrange Theorem}
+
+\paragraph{Properties of cosets}
+
+Now, I want to prove several properties of the cosets.
+The important observation here is that all left cosets form a partition of the group $G$ into non-overlapping subsets.
+The same is true for the right cosets.
+This observation provides us with some combinatorial tools.
+
+
+\begin{claim}
+\label{claim::cosets_disj}
+Let $G$ be a group, $H\subseteq G$ a subgroup and $g_1, g_2\in G$ be arbitrary elements.
+Then there are two options:
+\begin{enumerate}
+\item The cosets do not intersect each other: $g_1 H \cap g_2 H = \varnothing$.
+
+\item The cosets coincide: $g_1 H = g_2 H$.
+\end{enumerate}
+This means that each element of the group $G$ belongs to exactly one coset.
+\end{claim}
+\begin{proof}
+If $g_1H$ does not intersect $g_2H$ there is nothing to prove.
+
+Now we assume that the intersection $g_1 H\cap g_2 H$ is not empty.
+We need to prove that $g_1 H = g_2 H$.
+Suppose $g\in g_1 H \cap g_2H$.
+Since $g\in g_1H$, $g = g_1 h_1$ for some $h_1\in H$.
+Similarly, $g\in g_2H$ implies $g = g_2 h_2$ for some $h_2\in H$.
+Hence $g_1 h_1 = g_2 h_2$.
+Dividing by $h_1$ on the right, we get $g_1 = g_2 h_2 h_1^{-1}$.
+Since $H$ is a subgroup $h = h_2 h_1^{-1}\in H$.
+We have got $g_1 = g_2 h$ for some $h\in H$.
+
+Let us show that $g_1 H \subseteq g_2 H$.
+Suppose $g\in g_1H$, that is $g = g_1 h'$ for some $h'\in H$.
+Then, $g =g_2 h h'\in g_2 H$ because $hh'\in H$.
+Now, suppose $g\in g_2H$, that is $g = g_2 h'$ for some $h'\in H$.
+Then, $g = g_1 h^{-1}h'\in g_1 H$ because $h^{-1}h'\in H$.
+Hence, we have shown $g_2 H \subseteq g_1 H$.
+\end{proof}
+
+\begin{remark}
+It should be noted that $g_1 H  = g_2H$ if and only if $g_1 H \cap g_2 H \neq \varnothing$.
+Moreover, this occurs if and only if there is an element $h\in H$ such that $g_1 = g_2 h$.
+The latter is equivalent to the condition $g_2^{-1}g_1 \in H$.
+This provides us with a convenient way of checking if two cosets are the same.
+\end{remark}
+
+\begin{claim}
+\label{claim::cosets_size}
+Let $G$ be a group, $H\subseteq G$ be a finite subgroup and $g\in G$ an arbitrary element.
+Then $|gH| = |H| = |Hg|$.
+\end{claim}
+\begin{proof}
+I will prove the claim for left cosets.
+Let us consider the map
+\[
+\phi \colon H \to g H\quad x \mapsto gx
+\]
+It takes elements of $H$ to elements of $gH$.
+From the other hand, there is the inverse map
+\[
+\psi \colon gH \to H\quad x \mapsto g^{-1}x
+\]
+Thus $\phi$ and $\psi$ are bijections and we are done.
+\end{proof}
+
+\begin{claim}
+\label{claim::cosets_l_r_same}
+Let $G$ be a finite group and $H\subseteq G$ be a subgroup.
+Then
+\begin{enumerate}
+\item The amount of left cosets of $H$ is equal to $|G|/|H|$.
+
+\item The amount of right cosets of $H$ is equal to $|G|/|H|$.
+\end{enumerate}
+In particular, the number of left and right cosets is the same.
+\end{claim}
+\begin{proof}
+We will prove the first item.
+Claim~\ref{claim::cosets_disj} shows that $G$ is a disjoint union of some cosets, that is $G = g_1 H \sqcup \ldots \sqcup g_k H$.
+From the other hand, Claim~\ref{claim::cosets_size} shows that all the cosets $g_1H,\ldots, g_kH$ have the same amount of elements being equal to $|H|$.
+Hence 
+\[
+|G| = |g_1H| + \ldots +|g_k H| = |H| + \ldots + |H| = k |H|
+\]
+Here $k$ is the number of the distinct left cosets and we are done.
+\end{proof}
+
+\begin{definition}
+Let $G$ be a finite group and $H\subseteq G$ be a subgroup.
+Then the number of the left cosets of $H$ is called index of $H$ and is denoted by $(G:H)$.
+This number is also coincide with the number of the right cosets of $H$.
+\end{definition}
+
+Using this notation, we can rewrite Claim~\ref{claim::cosets_l_r_same} in the following way.
+
+\begin{claim}
+[The Lagrange Theorem]
+Let $G$ be a finite group and $H\subseteq G$ be a subgroup.
+Then, $|G| = (G : H)|H|$
+\end{claim}
+
+
+\paragraph{Corollaries of The Lagrange Theorem}
+
+\begin{enumerate}
+\item Let $G$ be a finite group and $H\subseteq G$ be a subgroup.
+Then $|H|$ divides $|G|$.
+
+\item Let $G$ be a finite group and $g\in G$ be an arbitrary element.
+Then $\ord(g)$ divides $|G|$.
+Indeed, $\ord(g) = |\langle g \rangle|$.
+But $|\langle g\rangle|$ divides $|G|$ by the previous item.
+
+\item Let $G$ be a finite group and $g\in G$ be an arbitrary element.
+Then $g^{|G|} = 1$.
+Indeed, we already know that $|G| = \ord(g) k$.
+Hence, 
+\[
+g^{|G|} = g^{\ord(g)k} = \left(g^{\ord(g)}\right)^{k} = 1^k = 1
+\]
+
+\item Let $G$ be a group of prime order $p$.
+Then, $G$ is cyclic.
+Indeed, since the order of $G$ is prime, it is greater than $1$.
+Hence, there is an element $g\in G$ such that $g\neq 1$.
+Hence $\langle g\rangle$ has order greater than $1$.
+But $|\langle g \rangle|$ divides $|G| = p$.
+Since $p$ is prime, the only option is $|\langle g \rangle| = p = |G|$.
+The latter means that $\langle g \rangle = G$ and we are done.
+
+\item The Fermat Little Theorem.
+Let $p\in \mathbb Z$ be a prime number and $a\in \mathbb Z$.
+If $p$ does not divide $a$, then $p$ divides $a^{p-1}-1$.
+Indeed, let us consider the group $(\mathbb Z_p^*, \cdot)$.
+For any element $b\in \mathbb Z_p^*$, we have $b^{|\mathbb Z_p^*|} = 1 \pmod p$ by item~(3).
+But $\mathbb Z_p^*$ has $p-1$ elements.
+Now, let $a\in \mathbb Z$ be comprime with $p$.
+We denote its remainder modulo $p$ by $b$.
+Then $a^{p-1} = b^{p-1} = 1\pmod p$ and we are done.
+\end{enumerate}
