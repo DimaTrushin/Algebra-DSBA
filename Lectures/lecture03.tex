@@ -1,0 +1,446 @@
+\ProvidesFile{lecture03.tex}[Lecture 3]
+
+
+\subsection{Homomorphisms and Isomorphisms}
+
+We have a lot of different groups in algebra.
+And we will study a couple of ways to produce new groups from given ones.
+In this situation, we need a way to compare the groups.
+How to recognize that we have constructed the same group that we already know?
+In order to answer this question, we need to explain what it means that two groups are the same.
+So, we need a way to compare two groups.
+This leads us to the notions of homomorphism (a way to compare groups) and isomorphism (a way to say that groups are the same).
+Let me proceed with formal definitions.
+
+\begin{definition}
+Let $G$ and $H$ be groups.
+We define a homomorphism $\varphi\colon G\to H$.
+\begin{itemize}
+\item \textbf{Data} A map $\varphi\colon G\to H$.
+
+\item \textbf{Axiom} $\varphi(g_1g_2) = \varphi(g_1) \varphi(g_2)$ for any $g_1,g_2\in G$.
+\end{itemize}
+In this case $\varphi$ is called a homomorphism from $G$ to $H$.
+\end{definition}
+
+\begin{remark}
+Let me explicitly repeat the definition.
+We are given a group $(G, \circ)$ and $(H,\cdot)$.
+A homomorphism $\varphi \colon G\to H$ is a map such that $\varphi(g_1 \circ g_2) = \varphi(g_1) \cdot \varphi(g_2)$.
+On the left-hand side we take elements $g_1$ and $g_2$ from $G$ and multiply them using the operation on $G$ and then send the resulting element to $H$.
+On the right-hand side, we send the elements $g_1$ and $g_2$ to the group $H$ first and then multiply the images using operation on $H$.
+\end{remark}
+
+\begin{examples}
+\begin{enumerate}
+\item Let $G = (\mathbb Z, +)$ and $H = (\mathbb Z_n, +)$, then the map $\pi\colon \mathbb Z\to \mathbb Z_n$ by the rule $k \mapsto k \pmod n$ is a homomorphism.
+
+\item Let $G = S_n$ be the group of permutations and $H = \mu_2 = \{\pm 1\}$ with multiplication.
+Then the map $\sgn \colon S_n \to \mu_2$ taking each permutation to its sign (even one goes to $1$ and odd one goes to $-1$) is a homomorphism.
+
+\item Let $G = (\operatorname{GL}_n(\mathbb R),\cdot)$ and $H = (\mathbb R^*, \cdot)$ be the set of non-zero real numbers with multiplication.
+Then the map $\det \colon \operatorname{GL}_n(\mathbb R) \to \mathbb R^*$ by the rule $A \mapsto \det(A)$ is a homomorphism.
+
+\item Let $G = (\mathbb R, +)$ and $H = (\mathbb R^*, \cdot)$.
+Then the map $\exp\colon \mathbb R\to \mathbb R^*$ by the rule $x \mapsto e^x$ is a homomorphism.
+
+\item Let $G = (\mathbb Z, +)$, $H$ be an arbitrary group and $h\in H$ be an arbitrary element.
+Then the map $\phi\colon \mathbb Z \to H$ by the rule $k \mapsto h^k$ is a homomorphism.
+
+\item Let $G = (\mathbb Z_n, +)$, $H$ be an arbitrary group and $h\in H$ be an element such that $h^n = 1$.
+Then the map $\phi\colon \mathbb Z_n \to H$ by the rule $k \mapsto h^k$ is a group homomorphism.
+\end{enumerate}
+\end{examples}
+
+Let us prove several properties of homomorphisms.
+
+\begin{claim}
+\label{claim::HomGrProp}
+Let $\varphi\colon G\to H$ be a homomorphism of groups.
+Then
+\begin{enumerate}
+\item $\varphi(1) = 1$, that is the neutral element of $G$ goes to the neutral element of $H$.
+
+\item $\varphi(g^{-1}) = \varphi(g)^{-1}$ whenever $g\in G$.
+\end{enumerate}
+\end{claim}
+\begin{proof}
+1) We know that $1 = 1 \cdot 1$.
+Let us apply $\varphi$ to this equality.
+Then we get
+\[
+\varphi(1) = \varphi(1 \cdot 1) = \varphi(1) \varphi(1) \in H
+\]
+Now, multiply this equality by $\varphi(1)^{-1}$, we will get $1 = \varphi(1)$.
+
+
+2) Let $g\in G$ be an arbitrary element.
+Then, $g g^{-1} = 1$.
+Let us apply $\varphi$ to this equality.
+Then we get
+\[
+\varphi(g) \varphi(g^{-1}) = \varphi(g g^{-1}) = \varphi(1) = 1
+\]
+Now multiply this on the left by $\varphi(g)^{-1}$.
+We will get $\varphi(g^{-1})  = \varphi(g)^{-1}$.
+\end{proof}
+
+\begin{definition}
+\label{def::IsomorphismGr}
+Let $G$ and $H$ be groups.
+We define an isomorphism $\varphi \colon G\to H$.
+\begin{itemize}
+\item \textbf{Data} A homomorphism $\varphi \colon G\to H$.
+
+\item \textbf{Axiom} $\varphi$ is bijective.
+\end{itemize}
+In this case, $\varphi$ is called an isomorphism between $G$ and $H$.
+If there is an isomorphism between $G$ and $H$, the groups $G$ and $H$ are called isomorphic.
+\end{definition}
+
+Let me clarify the definition.
+First let me explain what it means that $\varphi\colon X\to Y$ is a bijection (between sets).
+Suppose $X = \{1, 2, 3\}$, $Y = \{a, b, c\}$, and $\varphi$ works as follows $1 \mapsto a$, $2\mapsto b$, and $3\mapsto c$.
+Then you may think of it like this.
+The set $X$ is a set of names for your elements and the set $Y$ is a set of some other names for your elements.
+Than the map $\varphi$ is a renaming map it just switches the names of the elements.
+Thus, you may think that $Y$ is the same set as $X$ but with elements named differently.
+
+Now, if $\varphi\colon G\to H$ is an isomorphism of groups, then it is at least a bijection.
+Hence, it identifies elements of $G$ and $H$ saying that the underlying sets of the groups are the same.
+Also, the condition $\varphi(g_1g_2) = \varphi(g_1) \varphi(g_2)$ means that after this identification the operation on $G$ becomes an operation on $H$.
+The latter means that you rename the elements and the operation.
+Hence, you may think that $H$ is exactly the same group as $G$ but with different set of names for the elements and a different notation for the operation.
+However, this is essentially the same group.
+As a corollary, isomorphic groups have exactly the same properties.
+
+\begin{examples}
+\begin{enumerate}
+\item Let $G = (\mathbb Z_n, +)$ and $H = \mu_n\subseteq \mathbb C$ be the set of complex roots of unity with multiplication as an operation.
+Let us fix a primitive root $\xi \in\mu_n$.
+Then the map $\mathbb Z_n \to \mu_n$ by the rule $k \mapsto \xi^k$ is an isomorphism.
+
+\item Let $G = (\mathbb Z, +)$ and 
+\[
+H = \left\{\left.
+\begin{pmatrix}
+{1}&{n}\\
+{0}&{1}
+\end{pmatrix}
+\;\right|\;
+n\in \mathbb Z
+\right\}
+\]
+with multiplication as an operation.
+Then the map $\varphi\colon \mathbb Z\to H$ by the rule $k \mapsto \left(\begin{smallmatrix}{1}&{k}\\{0}&{1}\end{smallmatrix}\right)$ is an isomorphism.
+
+\item Let $G = (\mathbb C, +)$ and $H = (\mathbb R^2, +)$.
+Then the map $\varphi \colon \mathbb C\to \mathbb R^2$ by the rule $z \mapsto (\Re z, \Im z)$ is an isomorphism.
+
+\item Let $G = (\mathbb C^*, \cdot)$ and 
+\[
+H = \left\{\left.
+\begin{pmatrix}
+{a}&{-b}\\
+{b}&{a}
+\end{pmatrix}
+\;\right|\;
+a, b\in \mathbb R\text{ such that }a^2 + b^2 \neq 0
+\right\}
+\]
+with multiplication as an operation.
+Then the map $\varphi \colon \mathbb C^*\to H$ by the rule  $a + bi \mapsto \left(\begin{smallmatrix}{a}&{-b}\\{b}&{a}\end{smallmatrix}\right)$ is an isomorphism.
+
+\item Claim~\ref{claim::CyclicClass} says that a cyclic group $G = \langle g \rangle$ is isomorphic to $\mathbb Z$ or $\mathbb Z_n$ depending on the order of a generator.
+If $\ord g = \infty$, then $G\simeq \mathbb Z$.
+If $\ord g = n$, then $G\simeq \mathbb Z_n$.
+\end{enumerate}
+\end{examples}
+
+With each homomorphism we may associate several subgroups: kernel and image.
+
+\begin{definition}
+Let $\varphi\colon G\to H$ be a homomorphism of groups.
+Then
+\begin{enumerate}
+\item The kernel of $\varphi$ is $\ker \varphi = \{g\in G \mid \varphi(g) = 1\} \subseteq G$.
+
+\item The image of $\varphi$ is $\Im \varphi = \{\varphi(g)\mid g\in G\} = \varphi(G) \subseteq H$.
+\end{enumerate}
+\end{definition}
+
+It should be noted that the kernel is a subset of $G$ (belongs to the source of the map $\varphi$) and the image is a subset of $H$ (belongs to the target of the map $\varphi$).
+
+\begin{claim}
+\label{claim::HomProp}
+Let $\varphi\colon G\to H$ be a homomorphism of groups.
+Then
+\begin{enumerate}
+\item $\Im \varphi \subseteq H$  is a subgroup.
+
+\item $\ker \varphi \subseteq G$ is a normal subgroup.
+
+\item The map $\varphi$ is surjective if and  only if $\Im \varphi = H$.
+
+\item The map $\varphi$ is injective if and only if $\ker \varphi  = \{1\}$.
+\end{enumerate}
+\end{claim}
+\begin{proof}
+1) Let us check all the requirements for being subgroup.
+First, $1 = \varphi(1) \in \Im \varphi$, hence we have the identity.
+Second, $\varphi(g_1)\varphi(g_2) = \varphi(g_1 g_2) \in \Im\varphi$, thus it is closed under the operation.
+Third, $\varphi(g)^{-1} = \varphi(g^{-1}) \in \Im\varphi$, therefore it contains the inverse element for every element.
+
+2) Let us check the requirements for the subgroup.
+First, $\varphi(1) = 1$, hence $1 \in \ker \varphi$ by definition.
+Second, if $x, y\in \ker \varphi$, then $\varphi(xy) = \varphi(x) \varphi(y) = 1\cdot 1 = 1$.
+Therefore, $xy\in \ker\varphi$.
+Third, if $x\in \ker\varphi$, then $\varphi(x^{-1}) = \varphi(x)^{-1} = 1^{-1} = 1$.
+Hence, $x^{-1}\in \ker\varphi$.
+We have just verified that $\ker \varphi$ is a subgroup.
+We should show that $g \ker \varphi = \ker \varphi g$ for every $g\in G$.
+By Claim~\ref{claim::normal_crit}, we need to show that $g\ker \varphi g^{-1}\subseteq \ker \varphi$ for each $g\in G$.
+That is we should show that $\varphi(g \ker \varphi g^{-1}) = 1$ for each $g\in G$.
+Indeed, for each $h\in \ker \varphi$, we have
+\[
+\varphi(g h g^{-1}) = \varphi(g) \varphi(h) \varphi(g^{-1}) = \varphi(g) \cdot 1 \cdot \varphi(g^{-1}) = \varphi(g) \varphi(g^{-1}) = \varphi(g g^{-1}) = \varphi(1) = 1
+\]
+
+
+3) This holds trivially by the definition.
+
+4) Suppose $\varphi$ is injective and $x\in \ker\varphi$.
+The latter means that $\varphi(x) = 1$.
+From the other hand, we know that $\varphi(1) = 1$.
+Hence $x$ and $1$ go to the same element $1$.
+This means that $x = 1$ by the injectivity.
+
+Now suppose that $\ker \varphi = \{1\}$.
+Consider two elements $x, y\in G$ such that $\varphi(x) = \varphi(y)$.
+Multiplying by $\varphi(x)^{-1}$, we get
+\[
+1 = \varphi(y) \varphi(x)^{-1} = \varphi(y) \varphi(x^{-1}) = \varphi(yx^{-1})
+\]
+Hence $yx^{-1}\in\ker\varphi = \{1\}$.
+Thus $y x^{-1} = 1$.
+Therefore $y = x$ and we are done.
+\end{proof}
+
+\subsection{Product of groups}
+
+In general, we do not want to produce new groups from scratch.
+We want to construct a group using already given ones.
+There are many different operations in algebra to produce new groups.
+We are not going to learn all of them.
+Instead, we discuss the simplest one, which is the most useful one at the same time.
+
+\begin{definition}
+Let $G$ and $H$ be groups, we define a new group $G\times H$ as follows
+\begin{enumerate}
+\item As a set it is a product of underlying sets of the groups: $G\times H = \{(g, h)\mid g\in G,\;h\in H\}$.
+
+\item The operation 
+\[
+\cdot \colon (G\times H)\times (G\times H) \to G\times H
+\]
+is given by the rule
+\[
+(g_1, h_1) (g_2, h_2) = (g_1 g_2, h_1 h_2),\quad g_1, g_2,\in G, \;h_1, h_2\in H
+\]
+\end{enumerate}
+The group $G\times H$ is called the product of the groups $G$ and $H$.
+\end{definition}
+
+It should be noted that we must show that $G\times H$ is indeed a group.
+We have just defined the required data for a group.
+However, we need to check the axioms.
+Let me recall them.
+\begin{itemize}
+\item The operation is associative, that is
+\[
+(g_1, h_1)\Bigl( (g_2, h_2) (g_3, h_3) \Bigl) = \Bigl((g_1, h_1) (g_2, h_2)\Bigl) (g_3, h_3)
+\]
+
+\item There is an identity, $1 = (1, 1)$.
+
+\item Each element has inverse,  $(g, h)^{-1} = (g^{-1}, h^{-1})$.
+\end{itemize}
+All the properties are verified by a direct computation.
+I am leaving this as an exercise.
+If we have several groups $G_1,\ldots,G_k$, we may produce the group $G_1\times \ldots \times G_k$ in a similar way.
+
+\subsection{Finite Abelian Groups}
+
+Now I want to focus on the most important class of groups, that is the class of finitely generated abelian groups.
+Let me start with the definition.
+
+\begin{definition}
+A finite abelian group is a commutative (abelian) group $G$ with finitely many elements.
+\end{definition}
+
+The definition is not a surprise, the name of the term is clear enough.
+But pay attention to the next result.
+
+\begin{claim}
+Let $G$ be a finite abelian group, the $G$ is isomorphic to a group $\mathbb Z_{n_1}\times \ldots \times \mathbb Z_{n_k}$.
+\end{claim}
+
+I am not going to prove this result.
+The proof is not hard but requires some technical tools that we are not going to learn because of the lack of time.
+Also the proof itself does not reveal any important technique.
+So it is better to spend our time mastering the way of using the result instead of proving it.
+Now, I want to show you several examples.
+
+\begin{examples}
+\begin{enumerate}
+\item Let $G = \mathbb Z_8^*$ with multiplication as an operation.
+It is obviously a finite abelian group, hence it must be a product of cyclic groups.
+Indeed, we can check that
+\[
+\mathbb Z_8^* \simeq \mathbb Z_2\times \mathbb Z_2
+\]
+and the operation preserving bijection (that is isomorphism) is given by
+\[
+1 \leftrightarrow (0,0),\; 3 \leftrightarrow (1,0),\; 5\leftrightarrow(0,1),\;7\leftrightarrow(1,1)
+\]
+This is not the only way to identify these two groups.
+We may take a different isomorphism
+\[
+1 \leftrightarrow (0,0),\; 3 \leftrightarrow (1,0),\; 7\leftrightarrow(0,1),\;5\leftrightarrow(1,1)
+\]
+I am not going to describe all possible ways, but it must be clear that there are many different isomorphisms serving our purpose.
+Note also that the group is not cyclic because there is no element of order $4$ in it.
+
+\item Let $G = \mathbb Z_9^*$ with multiplication as an operation.
+This is also a finitely generated abelian group.
+In this case, we have
+\[
+\mathbb Z_9^* \simeq \mathbb Z_6
+\]
+and there are two different isomorphisms
+\[
+\begin{aligned}
+\mathbb Z_6 &\to \mathbb Z_9^*\\
+k &\mapsto 2^k
+\end{aligned}
+\quad\text{and}\quad
+\begin{aligned}
+\mathbb Z_6 &\to \mathbb Z_9^*\\
+k &\mapsto 5^k
+\end{aligned}
+\]
+Also note that the group here is cyclic.
+The elements $2$ and $5$ are different generators of the group.
+The isomorphisms above correspond to the choice of a generator.
+\end{enumerate}
+\end{examples}
+
+
+\begin{claim}
+[The Chinese Remainder Theorem]
+\label{claim::Chinese}
+Let $m, n\in \mathbb N$ be two coprime positive integers, that is $(m, n) = 1$.
+Then the map
+\[
+\Phi\colon \mathbb Z_{mn} \to \mathbb Z_m \times \mathbb Z_n,\quad
+k \mapsto (k\!\!\mod m,\;k\!\!\mod n)
+\]
+is an isomorphism of groups.
+\end{claim}
+\begin{proof}
+First, we should check that the map is a homomorphism.
+We need to show that $\Phi(k + d) = \Phi(k) + \Phi(d)$, that is
+\begin{gather*}
+\Phi(k + d) = ( (k+d)\!\!\mod m,\;(k+d)\!\!\mod n) = ((k\!\!\mod m) + (d\!\!\mod m),\;(k\!\!\mod n) + (d\!\!\mod n)) =\\
+= (k\!\!\mod m ,\;k\!\!\mod n) + (d\!\!\mod m ,\;d\!\!\mod n) = \Phi(k) + \Phi(d)
+\end{gather*}
+
+Now, I claim that the homomorphism is injective.
+Claim~\ref{claim::HomProp} item~(4) ensures that it is enough to show that the kernel of the homomorphism consists of the identity element only.
+By definition,
+\[
+\ker \Phi = \{k\in \mathbb Z_{mn}\mid k = 0\pmod m,\; k = 0\mod n\}
+\]
+Hence $k\in \ker \Phi$ if and only if $m$ divides $k$ and $n$ divides $k$.
+Since $m$ and $n$ are coprime, this implies that $mn$ divides $ k$.
+The latter means that $k = 0$ in $\mathbb Z_{mn}$.
+
+In order to prove that $\Phi$ is an isomorphism, we need to show that it is surjective.
+Let us compute the number of elements in both groups.
+By definition $|\mathbb Z_{mn}| = mn$.
+From the other hand, $|\mathbb Z_m\times \mathbb Z_n| = |\mathbb Z_m| \cdot |\mathbb Z_n| = m n$.
+Hence, $\Phi$ is an injective map between two sets of the same size.
+Hence, it must be bijective and we are done.
+\end{proof}
+
+From the previous claim it is clear how to take elements from $\mathbb Z_{mn}$ to the product $\mathbb Z_m\times \mathbb Z_n$.
+However, It is worth mentioning who to produce the map in the other direction.
+Since $m$ and $n$ are coprime, we have $1 = um + vn$ for some $u, v\in \mathbb Z$ by the Euclidean algorithm.
+Now consider the element $a_1 = um = 1 - vn$.
+It is clear that $a_1 \mapsto (0, 1)$ under the action of $\Phi$.
+Similarly, the element $a_2 = vn = 1 - um$ goes to $(1, 0)$.
+Hence, the element $(a, b)$ corresponds to the element $a a_1 + b a_2 \pmod{mn}$ in $\mathbb Z_{mn}$.
+
+\begin{examples}
+\begin{enumerate}
+\item In case $m = 3$ and $n = 2$, we have $\mathbb Z_6\simeq \mathbb Z_3\times\mathbb Z_2$.
+Here element $1$ goes to $(1, 1)$.
+Hence $(1, 1)$ is the generator of the cyclic group $\mathbb Z_3\times \mathbb Z_2$.
+Since $1 = 3 - 2$, we see that $3$ goes to $(0, 1)$ and $-2$ goes to $(1,0)$  (note that $- 2 = 4$ in $\mathbb Z_6$).
+Hence the inverse map is given by $(a, b)\mapsto -2a + 3b = 4a + 3b\pmod 6$.
+
+\item From the other hands, the group $\mathbb Z_2\times \mathbb Z_2$ is not cyclic.
+Hence there is no isomorphism with $\mathbb Z_4$.
+
+\item Another example of different presentations of a finite abelian group
+\[
+\mathbb Z_{30} \simeq \mathbb Z_6 \times \mathbb Z_5 \simeq \mathbb Z_3 \times\mathbb Z_{10}\simeq\mathbb Z_2 \times \mathbb Z_{15} \simeq\mathbb Z_2\times\mathbb Z_3\times \mathbb Z_5
+\]
+So, all five different constructions give us the same cyclic group.
+
+\item In general, if $m = p_1^{k_1}\ldots p_r^{k_r}$, where $p_i$ are prime, then
+\[
+\mathbb Z_{m} = \mathbb Z_{p_1^{k_1}}\times \ldots \times \mathbb Z_{p_r^{k_r}}
+\]
+\end{enumerate}
+\end{examples}
+
+As we saw above, the same finite abelian group may be written in many different ways.
+How to check quickly that two different representations give us the same group?
+The answer is given in the next result.
+
+\begin{claim}
+\label{claim::FAGClass}
+Let $G$ be a finite abelian group.
+Then
+\begin{enumerate}
+\item $G$ is uniquely presentable in the following form
+\[
+G = \mathbb Z_{d_1}\times \ldots \times \mathbb Z_{d_k},\quad\text{where}\; 1 < d_1|d_2|\ldots|d_k\text{ are positive integers}
+\]
+
+\item $G$ is uniquely (up to permutation of factors) presentable in the following form
+\[
+G = \mathbb Z_{p_1^{k_1}}\times \ldots \times \mathbb Z_{p_r^{k_r}},\quad \text{where}\; p_i \text{ are (not necessarily distinct) primes},\; k_i\text{ are positive integers}
+\]
+\end{enumerate}
+\end{claim}
+
+It is important to mention that primes $p_i$ may repeat in the second presentation, that is $\mathbb Z_2\times \mathbb Z_4$ is one of the possible cases.
+
+\begin{examples}
+\begin{enumerate}
+\item Let $G = \mathbb Z_2 \times \mathbb Z_6$ and $H = \mathbb Z_{12}$.
+These groups are presented in the first form.
+Since such a presentation is unique $G$ and $H$ are not isomorphic.
+
+\item Let $G = \mathbb Z_2 \times \mathbb Z_6$ and $H = \mathbb Z_2\times \mathbb Z_2\times \mathbb Z_3$.
+We see that $G$ is presented in the first form and $H$ is presented in the second one.
+Let us recompute $G$ into the second form using the Chinese Remainder Theorem
+\[
+G = \mathbb Z_2 \times \mathbb Z_6 = \mathbb Z_2 \times (\mathbb Z_2 \times \mathbb Z_3) = H
+\]
+Hence, the groups are isomorphic.
+\end{enumerate}
+\end{examples}
+
