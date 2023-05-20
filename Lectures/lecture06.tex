@@ -1,0 +1,398 @@
+\ProvidesFile{lecture06.tex}[Lecture 6]
+
+
+\section{Polynomials in one variable}
+
+\subsection{Definition}
+
+Let $F$ be a field.
+A polynomial $f$ in a variable $x$ is a picture
+\[
+f = a_0 + a_1 x + \ldots + a_n x^n,\quad \text{where } a_i \in F
+\]
+Here operations $+$ and $\cdot$ are just symbols.
+So, we take some elements $a_i$ of the field $F$ and write down a string of symbols as above on the sheet of paper.
+So, formally a polynomial is just an ordered sequence of coefficients $(a_0,\ldots,a_n)$.
+We also assume that coefficients $a_{n+1},a_{n+2},\ldots$ are zero for the polynomial $f$.
+Hence, we may assume that there are countably many coefficients but only finitely many of them are nonzero.
+This is very convenient if we want to compare polynomials or perform arithmetic operations.
+
+Suppose we are given two polynomials
+\[
+f = a_0 + a_1 x + \ldots + a_n x^n\text{ and } g = b_0 + b_1 x + \ldots + b_m x^m
+\]
+We say that $f$ and $g$ are equal if $a_k = b_k$ for all $k\in \mathbb N$.%
+\footnote{Here, I assume that $a_k = 0$ for $ k > n$ and similarly $b_k = 0$ for $k > m$.}
+We can add and multiply polynomials using the following rules
+\begin{gather*}
+f = \sum_{k=0}^n a_k x^k\quad\text{and}\quad g = \sum_{k=0}^m x^k\\
+f + g = \sum_{k \geqslant 0} (a_k + b_k) x^k\quad\quad
+f g = \sum_{k\geqslant 0}\Bigl( \sum_{u + v = k} a_u b_v\Bigl) x^k
+\end{gather*}
+The set of all polynomials with coefficients in $F$ is denoted by $F[x]$.
+A straightforward computation shows that $F[x]$ with the addition and multiplication defined above is a commutative ring.
+
+\begin{remark}
+It should be noted that each polynomial $f\in F[x]$ defines a function $\hat f\colon F\to F$ by the rule $a \mapsto f(a)$.
+Namely, if $f = a_0 + a_1 x + \ldots + a_n x^n$, then $f(a) = a_0 + a_1 a + \ldots + a_n a^n$.
+However, in general case $f$ is not uniquely determined by the function $\hat f$.
+Indeed, suppose $F = \mathbb Z_2$.
+Then, polynomials $f_n = x^n$ define exactly the same function $\hat f_n \colon \mathbb Z_2 \to \mathbb Z_2$ sending $0\mapsto 0$ and $1\mapsto 1$.
+So, the polynomials $f_n$ are all distinct but they define the same function.
+This explains why we give such a tricky definition of polynomials.
+We just want them to be pictures and not functions.
+And if we want, we can always produce a function for each polynomial.
+\end{remark}
+
+If $f\in F[x]$ is presented in the form $f = a_0 + a_1 x + \ldots + a_n x^n$, where $a_n \neq 0$, that is $n$ is the largest index of the nonzero coefficient present in $f$.
+Then $n$ is called the degree of $f$ and is denoted by $\deg f$.
+The coefficient $a_n$ is called the leading coefficient.
+The degree of the zero polynomial is not well-defined.
+We will assume that $\deg (0) = -\infty$.
+A polynomial $f\in F[x]$ is an element of the field $F$ if and only if $\deg (f) \leqslant 0$ and $f$ is a nonzero constant if and only if $\deg f = 0$.%
+\footnote{A constant here means an element of $F$.}
+
+\begin{claim}
+\label{claim::Degree}
+Let $F$ be a field.
+Then for any $f, g \in F[x]$, we have $\deg(fg) = \deg (f) + \deg(g)$.%
+\footnote{It should be noted that we assume that $-\infty + a = a + (-\infty) = -\infty$.}
+\end{claim}
+\begin{proof}
+If at least one of the polynomials is zero the required equality contains $-\infty$ on both sides and hence is true.
+Therefore, we may assume that $f$ and $g$ are not zero.
+Let 
+\[
+f = a_n x^n + a_{n-1}x^{n-1} + \ldots + a_1 x + a_0\quad \text{and} \quad g = b_mx^m + b_{m-1}x^{m-1} + \ldots + b_1 x + b_0
+\]
+such that $a_n\neq 0$ and $b_m\neq0$.
+Then 
+\[
+fg = a_n b_m x^{m+n} + h(x)
+\]
+where $\deg h < m + n$.
+Since $F$ is a field, $a_n b_m \neq 0$.
+Hence, $\deg fg = n + m = \deg f + \deg g$.
+\end{proof}
+
+\begin{claim}
+\label{claim::PolyZeroDiv}
+Suppose $F$ is a field.
+Then the only zero divisor of $F[x]$ is the zero polynomial.
+\end{claim}
+\begin{proof}
+If $f, g\in F[x]$, $f\neq 0$, and $g\neq 0$, then $\deg(f) \geqslant 0$ and $\deg(g) \geqslant 0$.
+Hence $\deg(fg) = \deg(f) + \deg(g)\geqslant 0$.
+In particular, $fg \neq 0$.
+\end{proof}
+
+\begin{claim}
+\label{claim::PolyInvert}
+Suppose $F$ is a field.
+Then a polynomial $f\in F[x]$ is invertible if and only if $f\in F^*$.
+\end{claim}
+\begin{proof}
+If $f$ is invertible, then $fg = 1$ for some polynomial $g\in F[x]$.
+Then, $0 = \deg(1) = \deg(fg) = \deg(f) + \deg(g)$.
+Since the degree of non-zero polynomials is not negative, $\deg(f) = \deg(g) = 0$.
+The latter means that $f$ and $g$ are constants.
+\end{proof}
+
+
+\subsection{Euclidean algorithm}
+
+If $F$ is a field, then $F[x]$ has a division with remainder.
+If $f, g \in F[x]$ and $g\neq 0$, then we may divide $f$ by $g$ with remainder.
+The latter means that there exist unique $q, r\in F[x]$ such that $f = q g + r$ and $\deg(r) < \deg (g)$.
+The polynomial $q$ is called the quotient and $r$ is the remainder.
+
+Suppose $f, g\in F[x]$, we say that $f$ divides $g$ if $g = fh$ for some $h\in F[x]$.
+It should be noted that any polynomial divides $0$.
+Also, if $a\in F^*$, then $f$ divides $af$ and vise versa because $F$ is a field.
+
+\begin{definition}
+Suppose $F$ is a field.
+A polynomial $f\in F[x]$ is called monic if its leading coefficient is equal to $1$.
+\end{definition}
+
+\begin{definition}
+Let $F$ be a field and $f, g\in F[x]$ be some polynomials.
+A polynomial $d\in F[x]$ is called a greatest common divisor of $f$ and $g$ if
+\begin{enumerate}
+\item $d$ divides both $f$ and $g$.
+
+\item if $h$ divides both $f$ and $g$, then $h$ divides $d$.
+
+\item $d$ is monic.
+\end{enumerate}
+\end{definition}
+
+
+\begin{claim}
+\label{claim::PolyIdeals}
+Let $F$ be a field and $I\subseteq F[x]$ be an ideal.
+Then $I = f F[x] = \{fh\mid h\in F[x]\}$ for some $f\in F[x]$.
+\end{claim}
+\begin{proof}
+If $I$ consists of zero only, then $I = 0 F[x]$.
+Let $f\in I$ be a non-zero polynomial of the least degree.
+Then for every $h\in I$, we divide $h$ by $f$ with remainder and get $h = qf + r$, where $\deg r < \deg f$.
+Then, $r = h - qf \in I$ and has the degree smaller than $f$.
+Since $f$ is not zero and has the smallest possible degree, $r$ must be zero.
+This completes the proof.
+\end{proof}
+
+The ideal $fF[x]$ is usually denoted by $(f)$ for short.
+It is very convenient and I will stick to this notation.
+
+\begin{claim}
+\label{claim::PolyGCD}
+Let $F$ be a field and $f,g\in F[x]$.
+Then
+\begin{enumerate}
+\item There exist a greatest common divisor $d$ of $f$ and $g$ and polynomials $u,v\in F[x]$ such that $d = uf + v g$.
+
+\item The greatest common divisor for $f$ and $g$ is unique.
+
+\end{enumerate}
+\end{claim}
+\begin{proof}
+(1) Consider the following set of polynomials
+\[
+I = \{a f + b g \mid a, b \in F[x]\}\subseteq F[x]
+\]
+This subset is an ideal of $F[x]$.
+By Claim~\ref{claim::PolyIdeals}, there is a monic polynomial $r\in I$ such that $I = (r)$.
+Since $r\in I$, $r = uf + vg$ for some $u, v\in F[x]$.
+Since $f, g \in I = (r)$, $f = s r$ and $g = t r$ for some $s, t \in F[x]$.
+
+Now, lets prove that $r$ is a greatest common divisor.
+Equalities $f = s r$ and $g = t r$ mean that $r$ divides $f$ and $g$, that is $d$ is a common divisor.
+If $h$ divides $f$ and $g$, then $h$ divides both summands in the right-hand side of  $r = uf + vg$.
+Hence $h$ divides $r$.
+All the properties of the gcd are satisfied.
+
+(2) Suppose we have two gcds $d_1$ and $d_2$.
+Then $d_1$ divides $d_2$ because $d_2$ is a gcd.
+And vice versa, $d_2$ divides $d_1$ because $d_1$ is a gcd.
+Thus
+\[
+d_1 = a d_2\quad d_2 = b d_1
+\]
+In particular, $d_1 = ab d_1$.
+Hence, $d_1(1 - ab)= 0$ in $F[x]$.
+But there is no zero-divisors in $F[x]$ by Claim~\ref{claim::PolyZeroDiv}.
+Hence, $1 - ab = 0$ and, thus, $1 = ab$.
+Then $a$ and $b$ are invertible elements of $F$.
+\end{proof}
+
+\begin{remarks}
+\begin{itemize}
+\item Let me explicitly state that if $f = g = 0$, then the greatest common divisor is $0$ by definition.
+Indeed, in this case every polynomial divides $f$ and $g$ and $0$ is the divisor that is divisible by any other divisor.
+
+\item If $f \neq 0$ and $g = 0$, then the greatest common divisor is $f$ divided by the leading coefficient because $f$ divides $g$ in this case.
+\end{itemize}
+\end{remarks}
+
+% Euclidean algorithm, gcd
+
+\begin{claim}
+Let $F$ be a field and $f, g, h\in F[x]$ are some polynomials.
+ Then $(f, g) = (f, g - hf)$.
+\end{claim}
+\begin{proof}
+Indeed, the set of divisors for the pair $\{f, g\}$ is the same as for the pair $\{f, g-hf\}$.
+In particular, the maximal elements are also the same, that is the greatest common divisors are the same.
+\end{proof}
+
+The latter claim enables us to compute a greatest common divisor in an effective way using Euclidean algorithm.
+
+\paragraph{Input:}
+
+Two polynomials $f, g\in F[x]$.
+Here $F$ is a field.
+
+\paragraph{Output:}
+
+A greatest common divisor $d\in F[x]$.
+
+\paragraph{Algorithm}
+
+We use two temporary variables $u, v\in F[x]$.
+
+\begin{enumerate}
+\item Initialize $u = f$, $v = g$ in case $\deg f \geqslant \deg g$ and $u = g$, $v = f$ otherwise.
+
+\item While $v \neq 0$ do the following:
+\begin{enumerate}
+\item Divide $u$ with reminder by $v$ and get $u = q v + r$.
+
+\item Replace $u = v$, $v = r$.
+\end{enumerate}
+
+\item When $v = 0$, $u$ becomes a greatest common divisor of the initial $f$ and $g$.
+\end{enumerate}
+
+
+\subsection{Unique Factorization Domain}
+
+\begin{definition}
+\begin{itemize}
+\item A polynomial $ f\in F[x]\setminus F$ is reducible if there exist $g,h\in F[x]$ such that $f = gh$ and $0<\deg (g) < \deg (f)$ and $0 < \deg(h) < \deg(f)$.
+
+\item A polynomial $ f\in F[x]\setminus F$ is irreducible if for any $g,h\in F[x]$ such that $f = gh$, either $g$ or $h$ is a nonzero constant.
+\end{itemize}
+\end{definition}
+
+It should be noted that all nonzero polynomials are divided into three classes: 1) invertible polynomials, that is, $F^*$, 2) reducible polynomials, 3) irreducible polynomials.
+
+\begin{claim}
+[UFD]
+\label{claim::PolyUFD}
+Let $F$ be a field.
+Then every element $f\in F[x]\setminus F$ is uniquely  presented in the form $f = a p_1^{k_1}\ldots p_n^{k_n}$, where $a\in F$ is a nonzero constant, $k_i$ are positive integers, and $p_i$ are distinct irreducible monic polynomials.
+\end{claim}
+
+I do not want to waste our time on proving this result.
+An important remark is that the behavior of the polynomials resembles that of integer numbers.
+The key argument in the proof of the claim is item~(1) of Claim~\ref{claim::PolyGCD}, that is the fact, that a greatest common divisor of polynomials is a linear combination of the polynomials.
+However, it is worth mentioning the following partial case of the claim.
+
+\begin{claim}
+Let $F$ be a field, $f, g\in F[x]$ are coprime polynomials, and $h\in F[x]$ is divisible by $f$ and $g$.
+Then, $h$ is divisible by $fg$.
+\end{claim}
+\begin{proof}
+Since $f$ and $g$ are coprime, we have $1 = uf + vg$ for some $u,v\in F[x]$ by Claim~\ref{claim::PolyGCD} item~(1).
+Multiplying the equality by $h$, we get $h = u hf + v hg$.
+Since $g$  divides $h$, $gf$ divides $uhf$.
+Since $f$ divides $h$, $fg$ divides $vhg$.
+Thus, $fg$ divides $h$.
+\end{proof}
+
+\subsection{Ring of remainders}
+
+Now we are ready to meet one of the most important objects in algebra, that is the ring of remainders in case of polynomials.
+
+Let $F$ be a field and $f\in F[x]$ be any polynomial.
+I am going to define the ring $F[x]/(f)$.
+First, I need to specify a set, then two operations: addition and multiplication, and finally, I should check all the axioms.
+If $f = 0$, we define $F[x]/(f)$ to be the polynomial ring itself $F[x]$.
+The interesting case is when $f \neq 0$:
+\begin{itemize}
+\item $F[x]/(f) = \{g \in F[x]\mid \det g < \deg f\}$ the set of reminders with respect to $f$.
+
+\item $+\colon F[x]/(f)\times F[x]/(f) \to F[x]/(f)$ is the usual addition of polynomials.
+
+\item $\cdot \colon F[x]/(f)\times F[x]/(f) \to F[x]/(f)$ is the multiplication modulo $f$, namely: for every $g, h\in F[x]/(f)$, we define $gh \pmod{f}$.
+The latter means, we divide $gh$ by $f$ with reminder and get $gh = q f + r$.
+Then the product of $g$ and $h$ is $r$.
+\end{itemize}
+
+\begin{claim}
+If $F$ is a field and $f\in F[x]$ is a polynomial, the set  $F[x]/(f)$ with the given operations is a commutative ring.
+\end{claim}
+\begin{proof}
+If $f = 0$, this is clear because $F[x]/(f) = F[x]$ by definition.
+Suppose that $f \neq 0$.
+The set $F[x]/(f) = \{g\in F[x]\mid \deg g < \deg f\}$ with addition is an abelian group because its a subgroup in $(F[x], +)$.
+
+Now we need to show: 1) the distributivity law, 2) associativity of multiplication, 3) existence of a neutral element for multiplication, 4) commutativity of multiplication.
+
+1) If $g,h,p\in F[x]/(f)$, we should show that
+\[
+(g+h)p\!\!\mod{f} = gp\!\!\mod{f} + hp\!\!\mod{f}\quad\text{and}\quad
+g(h+p)\!\!\mod{f} = gh\!\!\mod{f} + gp\!\!\mod{f}
+\]
+We will show the first one.
+The second one follows from item~(4).
+We divide $gp$ and $hp$ by $f$ with reminder and get
+\[
+gp = q_1 f + r_1,\;\deg r_1 < \deg f,\;\text{and}\;hp = q_2 f + r_2,\;\deg r_2 < \deg f
+\]
+How, the right-hand side is $r_1 + r_2$ by definition.
+From the other hand the expression
+\[
+(g+h)p = (q_1 + q_2)f + r_1 + r_2
+\]
+is a division of $(g+h)p$ by $f$ and the remained here is $r_1 + r_2$.
+Hence, the left-hand side is the same.
+
+2) If $g,h,p\in F[x]/(f)$, then 
+\[
+(g\cdot  (h\cdot  p\!\!\mod{f}))\!\!\mod{f}= (g\cdot  h\cdot  p)\!\!\mod{f} = ((g \cdot h\!\!\mod{f}) \cdot p)\!\!\mod{f}
+\]
+If am going to leave this as an exercise in abstract nonsense.
+
+3) The polynomial $1$ is the neutral element by definition.
+
+4) The multiplication is commutative by definition.
+
+\end{proof}
+
+\begin{remarks}
+\begin{itemize}
+\item It should be noted that we may consider $F[x]/(f)$ as a subset (even a subgroup with respect to addition) in $F[x]$.
+However, this inclusion does not preserve the multiplication.
+The latter means that $F[x]/(f)$ is NOT a subring of $F[x]$.
+
+\item From the other hand, the map $F[x]\to F[x]/(f)$ by the rule $g\mapsto g\!\!\mod{f}$ is a surjective ring homomorphism.
+\end{itemize}
+\end{remarks}
+
+\begin{claim}
+\label{claim::PolyRemIdeals}
+Let $F$ be a field, $f\in F[x]$ be a polynomial, and $I\subseteq F[x]/ (f)$ an ideal.
+Then there is a polynomial $g\in F[x]$ dividing $f$ such that $I = (g) = \{g h\!\!\mod{f}\mid h\in F[x]\}$.
+\end{claim}
+\begin{proof}
+The case of $f = 0$ is covered in Claim~\ref{claim::PolyIdeals}.
+Now we assume that $f\neq 0$.
+If $I$ consists of the zero only, then $I = (f)$ and we are done.
+
+Let $h\in I$ be a nonzero polynomial of the least possible degree.
+Then for any $g\in I$, we divide $g$ by $h$ with remainders and get $g = qh + r$ and $\deg r < \deg h$.
+Also, $r = g - qh\in I$.
+Since $h$ was nonzero with least possible degree in $I$, the only option for $r$ is $0$.
+Hence, $h$ divides any $g\in I$.
+The latter means $I = (h)$.
+
+Now, we need to show that $h$ divides $f$.
+Let us divide $f$ by $h$ with remainder, we get $f = qh + r$, where $\deg r < \deg h$.
+This means that $r = -qh$ in $F[x]/(f)$.
+In particular, $r\in I$ and has degree smaller than $h$.
+The only possible option here is $r = 0$ and we are done.
+\end{proof}
+
+
+\begin{claim}
+[The Chinese Remainder Theorem]
+Let $f, g\in F[x]$ be coprime polynomials, that is $(f, g) = 1$.
+Then the map
+\[
+\Phi\colon F[x]/(fg) \to F[x]/(f)\times F[x]/(g)\quad h \mapsto (h\!\!\mod{f},h\!\!\mod{g})
+\]
+is an isomorphism of rings.
+\end{claim}
+\begin{proof}
+First, we check that the map is a homomorphism of rings.
+We need to show that it preserves the addition, the multiplication and the identity.
+This is a straightforward computation and I skip this.
+
+Now, we should show that it is injective.
+By Claim~\ref{claim::RingHomProp} it is enough to show that the kernel of $\Phi$ is zero.
+Suppose $h\in \ker \Phi$.
+This means $h = 0 \pmod f$ and $h = 0 \pmod g$, that is $h$ is divisible by $f$ and $g$.
+Since $f$ and $g$ are coprime the latter means that $h$ is divisible by $fg$.
+But $\deg h < \deg fg$.
+The only possible case is $h = 0$.
+
+Now, we should show the surjectivity.
+Since $F$ is a field $F[x]/(fg)$ and $F[x]/(f)\times F[x]/(g)$ are vector spaces over $F$.
+Moreover, the map $\Phi$ is a linear map because it preserves the addition and multiplication by any polynomial, hence it preserves the addition and multiplication by any constant.
+Since $\Phi$ is injective, it is enough to show that both spaces have the same dimension.
+It is clear that $\dim_F F[x]/(fg) = \deg(fg)$.
+Also the dimension of the right-hand side is $\deg f + \deg g$.
+Now the result follows from Claim~\ref{claim::Degree}.
+\end{proof}
