@@ -1,0 +1,384 @@
+\ProvidesFile{lecture05.tex}[Lecture 5]
+
+
+\section{Rings and Fields}
+
+\subsection{Definitions}
+
+As time passes, we are no longer satisfied with an algebraic structure having one operation only.
+We want more.
+We are now mature enough to deal with two operations simultaneously.
+So, let us go straight into the abyss.
+
+\begin{definition}
+We are going to define a ring $(R, +, \cdot)$ or simply $R$.
+\begin{itemize}
+\item\textbf{Data:} 
+\begin{enumerate}
+\item A set $R$ of elements.
+
+\item An operation $+ \colon R\times R\to R$ called addition.
+
+\item An operation $\cdot \colon R\times R\to R$ called multiplication.
+\end{enumerate}
+
+\item\textbf{Axioms:}
+\begin{enumerate}
+\item $(R, +)$ is an abelian group.
+
+\item Multiplication is left and right distributive over addition:
+\[
+a(b + c) = ab + ac \quad\text{and}\quad (a + b) c = ac + bc\quad \text{for all  }a, b, c\in R
+\]
+
+\item Multiplication is associative: $(ab)c = a(bc)$ for all $a, b, c\in R$.
+
+\item Multiplication has a neutral element denoted by $1$.
+\end{enumerate}
+\end{itemize}
+In this case, we say that $(R, +, \cdot)$ is an associative ring with an identity.
+We will use the term ring to denote an associative ring with an identity.
+As before, we usually say that $R$ is a ring assuming that the operations in use are clear.
+The neutral element with respect to addition is denoted by $0$ and is called zero.
+If $a\in R$ is an arbitrary element, its inverse with respect to addition is denoted by $-a$.
+For any $a, b\in R$, the expression $a + (-b)$ will be denoted by $a - b$ for short.
+If in addition we have
+\begin{itemize}
+\item[]
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Multiplication is commutative: $ab = ba$ for all $a, b\in R$.
+\end{enumerate}
+\end{itemize}
+The ring is said to be commutative.
+And if we add the following conditions
+\begin{itemize}
+\item[]
+\begin{enumerate}
+\setcounter{enumi}{5}
+\item Every non-zero element is invertible with respect to multiplication: for every $a\in R\setminus\{0\}$, there exists an element $b\in R$ such that $ab = ba = 1$.
+
+\item $1 \neq 0$.
+\end{enumerate}
+\end{itemize}
+The ring is said to be a field.
+In this case, the inverse element for $a$ is denoted by $a^{-1}$.%
+\footnote{It should be noted that it is not enough to check one of the conditions $ab = 1$ or $ba = 1$ if the multiplication is not commutative.}
+\end{definition}
+
+\begin{examples}
+\begin{enumerate}
+\item Let $R = \{*\}$ be the set with one element only.
+Then there is only one possible binary operation on this set.
+We use this operation as addition and multiplication, that is $+\colon R\times R\to R$ is given by $* + * = *$ and $\cdot \colon R\times R\to R$ is given by $* \cdot * = *$.
+Then this is a commutative ring.
+Its only element $*$ is the zero element (neutral with respect to addition) and the identity element (neutral with respect to multiplication).
+Every nonzero element is invertible because there is no nonzero elements, hence condition~(6) holds.
+But $1 = 0$ in this ring.
+
+\item The integer numbers with the usual addition and multiplication $(\mathbb Z, +, \cdot)$ is a commutative ring.
+
+\item The ring of matrices with the usual matrix addition and multiplication $(\operatorname{M}_n(\mathbb R), +, \cdot)$ is a ring.
+
+\item The real numbers with the usual addition and multiplication $(\mathbb R, +, \cdot)$ is a field.
+
+\item The set of remainders modulo natural number $n$ with the usual addition and multiplication modulo $n$, that is $(\mathbb Z_n, +, \cdot)$, is a commutative ring.
+
+\item If in the previous example the modulus $p$ is prime, then $(\mathbb Z_p, +,\cdot)$ is a field.% (see Claim~\ref{claim::ZpField}).
+
+\item Let $A$ be any commutative ring and $x$ be a variable.
+Then, $A[x] = \{a_0 + a_1 x + \ldots + a_n x^n \mid n\in \mathbb N,\; a_i\in A\}$ is the set of all polynomial with coefficients in $A$.
+The set $A[x]$ with usual addition and multiplication becomes a commutative ring.
+\end{enumerate}
+\end{examples}
+
+\begin{remark}
+If we are given a ring $R$, then there are some natural properties of operations that are not included in the list of axioms but easily follow from them.
+I do not want to torture you proving these formal tricks but it makes sense to list the useful properties:
+\begin{enumerate}
+\item For any element $x\in R$, we have $0 x = x 0  = 0$.
+
+\item For any elements $x, y\in R$, we have $x - (-y) = x + y$.
+
+\item For any element $x\in R$, we have $(-1) x = - x$.
+
+\item For any invertible elements $x,y\in R$, $(xy)^{-1} = y^{-1}x^{-1}$.
+\end{enumerate}
+\end{remark}
+
+\begin{definition}
+Let $R$ be a ring.
+We are going to define a subring $T\subseteq R$.
+\begin{itemize}
+\item\textbf{Data:} 
+\begin{enumerate}
+\item A subset $T\subseteq R$.
+\end{enumerate}
+
+\item\textbf{Axioms:}
+\begin{enumerate}
+\item $(T, +)\subseteq (R, +)$ is a subgroup.
+
+\item $T$ is closed under multiplication.
+
+\item $T$ contains $1$.
+\end{enumerate}
+\end{itemize}
+\end{definition}
+
+\begin{examples}
+\begin{enumerate}
+\item Consider $\mathbb Z\subseteq \mathbb R$.
+The set $\mathbb Z$ is a subring.
+
+\item Upper triangular matrices is a subring of all square matrices.
+
+\item Scalar matrices is a subring of all square matrices.
+\end{enumerate}
+\end{examples}
+
+\subsection{Elements of a ring}
+
+There are many approaches to study a ring.
+The simplest one is the element-wise approach.
+In this case, we study elements with different properties.
+
+\begin{definition}
+Let $R$ be a ring and $x\in R$ be an element of $R$.
+\begin{itemize}
+\item The element $x$ is called invertible if there exists $y\in R$ such that $xy = yx = 1$.
+In this case $y$ is denoted by $x^{-1}$.
+The set of all invertible elements of $R$ is denoted by $R^*$.
+
+\item The element $x$ is called left zero divisor if there exists a nonzero $y\in R$ such that $xy = 0$.
+Similarly, $x$ is called right zero divisor if there exists a nonzero $y\in R$ such that $yx = 0$.
+The sets of left and right zero divisors will be denoted by $D_l(R)$ and $D_r(R)$, respectively.
+The set $D(R) = D_l(R) \cup D_r(R)$ is the set all all zero divisors of $R$.
+
+\item The element $x$ is called nilpotent if $x^n = 0$ for some $n\in \mathbb N$.
+The set of all nilpotent elements is denoted by $\operatorname{nil}(R)$.
+
+\item The element $x$ is called idempotent if $x^2 = x$.
+The set of all idempotents of $R$ is denoted by $E(R)$.
+
+\end{itemize}
+\end{definition}
+
+\begin{examples}
+\begin{enumerate}
+\item Let $R = \mathbb Z$ be the ring of integers.
+Then, $\mathbb Z^* = \{\pm 1\}$, $D(\mathbb Z) = 0$, $\operatorname{nil}(\mathbb Z) =  0$, $E(\mathbb Z) = \{1, 0\}$.
+
+\item Let $R = \mathbb R$ be the field of real numbers.
+Then, $\mathbb R^* = \mathbb R\setminus\{0\}$, $D(\mathbb R) = 0$, $\operatorname{nil}(\mathbb R) = 0$, $E(\mathbb R) = \{1, 0\}$.
+
+\item Let $R = \operatorname{M}_n(\mathbb R)$ be the ring of square matrices.
+Then, $\operatorname{M}_n(\mathbb R)^* = \operatorname{GL}_n(\mathbb R)$, $D(\operatorname{M}_n(\mathbb R))$ is the set of degenerate matrices, $\operatorname{nil}(\operatorname{M}_n(\mathbb R)$ is the set of matrices with zero complex eigenvalues, $E(\operatorname{M}_n(\mathbb R))$ is the set of matrices of the form $C^{-1}DC$, where $D$ is diagonal with elements $1$ and $0$ on the diagonal.
+
+\item Let $R = \mathbb Z_n$ and $n = p_1^{k_1}\ldots p_r^{k_r}$, where $p_i$ are distinct prime numbers and $k_i > 0$.
+Then, $\mathbb Z_n^* = \{k\in \mathbb Z_n\mid (k, n) = 1\}$, $D(\mathbb Z_n) = \{k\in \mathbb Z_n\mid (k, n) \neq 1\}$, $\operatorname{nil}(\mathbb Z_n) = \{k\in \mathbb Z_n\mid p_1|k,\ldots,p_r|k\}$.
+By the Chinese Remainder Theorem, there exist elements $e_i\in \mathbb Z_n$ such that $e_i = 1 \pmod{p_i^{k_i}}$ and $e_i = 0\pmod{p_j^{k_j}}$ if $j\neq i$.
+Then, $E(\mathbb Z_n)$ consists of the sums $\sum_{t} e_{i_t}$.
+The empty sum denotes the zero and the sum through all the elements $e_i$ gives the identity.
+\end{enumerate}
+\end{examples}
+
+\subsection{Ideals}
+
+Another approach to study a ring is to study its special subsets.
+It turns out that this approach is more convenient than the elements-wise one.
+There are two interesting types of subsets: subrings and ideals.
+The word ideal sounds much cooler, so I am going to deal with the ideals right now.
+
+\begin{definition}
+Suppose that $(R, +, \cdot)$ is a ring.
+I am going to define an ideal $I$ in the ring $R$.
+\begin{itemize}
+\item\textbf{Data:} 
+\begin{enumerate}
+\item A subset $I\subseteq R$.
+\end{enumerate}
+
+\item\textbf{Axioms:}
+\begin{enumerate}
+\item $(I, +)\subseteq (R,+)$ is a subgroup.
+
+\item For any $r\in R$ we have
+\[
+r I = \{rx\mid x\in I\} \subseteq I\quad\text{and}\quad Ir = \{xr\mid x\in I\}\subseteq I
+\]
+\end{enumerate}
+\end{itemize}
+In this case, we say that $I$ is an ideal of $R$.
+The subsets $0$ and $R$ are always ideals and are called the trivial ideals of $R$.
+\end{definition}
+
+It should be noted that it is not enough to check that $rI \subseteq I$ for any $r$ or that $Ir \subseteq I$ for any $r$.
+If the ring $R$ is not commutative, it may happen that on of the conditions holds while the other one does not.
+
+
+\begin{claim}
+\label{claim::ZIdeals}
+Let $R = \mathbb Z$, then every ideal is of the form $n\mathbb Z$ for some $n\in \mathbb Z$.
+\end{claim}
+\begin{proof}
+Let $I\subseteq \mathbb Z$ be an ideal.
+Then $(I, +)$ is at least a subgroup in $(\mathbb Z, +)$.
+By Claim~\ref{claim::Zsubgroups}, we already know that $I = n\mathbb Z$ for some $n\in \mathbb Z$.
+From the other hand, let us take an arbitrary $I = n\mathbb Z$ and $k\in \mathbb Z$.
+Then,
+\[
+k I = \{k x \mid x\in n\mathbb Z\} = \{kn m\mid m\in \mathbb Z\} = kn\mathbb Z\subseteq n\mathbb Z
+\]
+Hence, every additive subgroup is an ideal.
+\end{proof}
+
+
+\begin{claim}
+\label{claim::ZnIdeals}
+Let $R = \mathbb Z_n$, then every ideal is uniquely presented in the form $k\mathbb Z_n$ for some $k|n$.
+\end{claim}
+\begin{proof}
+
+First, we should show that the set $k \mathbb Z_n$ is an ideal.
+By Claim~\ref{claim::Znsubgroups}, $k \mathbb Z_n$ is an additive subgroup of $\mathbb Z_n$.
+Hence, we only need to show that for each $a\in \mathbb Z_n$ and each $x\in k \mathbb Z_n$ their product $a x \pmod n$ is in $k \mathbb Z_n$.
+Suppose $a x = r \pmod n$.
+Then $a x = q n + r$.
+Since $k|x$ and $k | n$, $r$ is divisible by $k$.
+The latter means that $r$ belongs to $k \mathbb Z_n$ and we are done.
+
+Let $I\subseteq \mathbb Z_n$ be any ideal.
+By Claim~\ref{claim::Znsubgroups}, every subgroup of $\mathbb Z_n$ is of the form $k \mathbb Z_n$ for some $k | n$.
+Since $I$ must be subgroup with respect to addition, $I$ must be of the form $k \mathbb Z_n$.
+\end{proof}
+
+
+
+\subsection{Homomorphisms of Rings}
+
+We used homomorphisms of groups in order to compare different groups and isomorphisms provides us with a way of saying that to groups are the same.
+We can extend this approach to the case of rings.
+
+\begin{definition}
+Let $(R, +, \cdot)$ and $(S, +, \cdot)$ be rings.
+We are going to define a homomorphism $\phi\colon R\to S$.
+\begin{itemize}
+\item\textbf{Data:} 
+\begin{enumerate}
+\item A map $\phi\colon R\to S$.
+\end{enumerate}
+
+\item\textbf{Axioms:}
+\begin{enumerate}
+\item $\phi(a + b) = \phi(a) + \phi(b)$ for all $a, b\in R$.
+
+\item $\phi(ab) = \phi(a)\phi(b)$ for all $a,b\in R$.
+
+\item $\phi(1) = 1$.
+\end{enumerate}
+\end{itemize}
+In this case, we say that $\phi$ is a homomorphism from $R$ to $S$.
+If in addition we have
+\begin{itemize}
+\item[]
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item $\phi$ is bijective
+\end{enumerate}
+\end{itemize}
+then $\phi$ is called an isomorphism.
+In this case $R$ and $S$ are called isomorphic.
+\end{definition}
+
+As before, this is not the most general notion of a homomorphism.
+But I am going to stick to this convenient and commonly used case.
+
+\begin{remarks}
+\begin{enumerate}
+\item It should be noted that if $\phi\colon R\to S$ is a homomorphism of rings, then at least $\phi\colon (R,+) \to (S, +)$ is a homomorphism of abelian groups.
+In particular, $\phi(0) = 0$ and $\phi(-a) = - \phi(a)$ by Claim~\ref{claim::HomGrProp}.
+
+\item If $R$ and $S$ are isomorphic rings, then they are basically the same.
+We already discussed how to understand isomorphisms in case of arbitrary groups, see discussion after Definition~\ref{def::IsomorphismGr}.
+Briefly, isomorphism rename elements of $R$ into elements of $S$ and switch addition and multiplication of $R$ into addition and multiplication of $S$, respectively.
+Isomorphic rings have exactly the same properties.
+\end{enumerate}
+\end{remarks}
+
+\begin{examples}
+\begin{enumerate}
+\item The map $\mathbb Z\to \mathbb Z_n$ via $k\mapsto k \pmod n$ is a ring homomorphism.
+
+\item The map $\mathbb R\to \operatorname{M}_n(\mathbb R)$ via $\lambda \mapsto \lambda E$, where $E$ is the identity matrix, is a ring homomorphism.
+
+\item The map $\mathbb R[x]\to \mathbb C$ via $f(x) \mapsto f(i)$, where $i^2 = -1$, is a ring homomorphism.
+
+\item The map $\mathbb C\to \operatorname{M}_n(\mathbb R)$ via $a + bi \mapsto \left(\begin{smallmatrix}{a}&{-b}\\{b}&{a}\end{smallmatrix}\right)$ is a ring homomorphism.
+\end{enumerate}
+\end{examples}
+
+
+\begin{claim}
+[The Chinese Remainder Theorem]
+Let $n$ and $m$ be coprime natural numbers, that is $(n,m) = 1$.
+Then the map
+\[
+\Phi \colon \mathbb Z_{mn} \to \mathbb Z_m \times \mathbb Z_n,\quad k\mapsto (k\!\!\mod m, k\!\!\mod n)
+\]
+is a ring isomorphism.
+\end{claim}
+\begin{proof}
+We already know that $\Phi\colon (\mathbb Z_{mn}, +) \to (\mathbb Z_m\times\mathbb Z_n, +)$ is an isomorphism of abelian groups, see Claim~\ref{claim::Chinese}.
+Also, we checked that $\Phi$ preserves the multiplication and the identity element, see the proof of Claim~\ref{claim::ChineseMult}.
+\end{proof}
+
+
+\begin{definition}
+Let $\phi\colon R\to S$ be a homomorphism of rings.
+Then
+\begin{itemize}
+\item The kernel of $\phi$ is $\ker\phi = \{r\in R\mid \phi(r) = 0\}\subseteq R$.
+
+\item The image of $\phi$ is $\Im \phi = \{\phi(r) \mid r\in R\} = \phi(R)\subseteq S$.
+\end{itemize}
+\end{definition}
+
+\begin{claim}
+\label{claim::RingHomProp}
+Let $\phi\colon R\to S$ be a homomorphism of rings.
+Then
+\begin{enumerate}
+\item $\Im\phi\subseteq S$ is a subring.
+
+\item $\ker \phi\subseteq R$ is an ideal.
+
+\item The map $\phi$ is surjective if and only if $\Im\phi = S$.
+
+\item The map $\phi$ is injective if and only if $\ker \phi = \{0\}$.
+\end{enumerate}
+\end{claim}
+\begin{proof}
+1) We already know that $\Im \phi$ is an additive subgroup, see Claim~\ref{claim::HomProp}.
+By definition of the homomorphism $1 = \phi(1) \in \Im \phi$.
+Hence, we need to show that it is closed under multiplication.
+Indeed, if $x,y\in \Im\phi$, then $x = \phi(a)$ and $y = \phi(b)$ for some $a,b\in R$.
+Then,
+\[
+xy = \phi(a) \phi(b) = \phi(ab) \in \Im \phi
+\]
+
+2) We already know that $\ker \phi$ is an additive subgroup, see Claim~\ref{claim::HomProp}.
+Hence, we should show that it is stable under multiplication by any element of $R$.
+Let $x\in \ker \phi$ and $r\in R$, we need to show that $rx, xr \in \ker \phi$, that is $\phi(rx) = 0$ and $\phi(xr) = 0$.
+Indeed, $\phi(rx) = \phi(r)\phi(x) = \phi(r) 0 = 0$ and similarly $\phi(xr) = 0$.
+
+3) The captain Obvious told us that this is true.
+
+4) Since $\phi\colon (R,+)\to (S,+)$ is a homomorphism of additive groups, the result follows from Claim~\ref{claim::HomProp}.
+
+\end{proof}
+
+
+
+
