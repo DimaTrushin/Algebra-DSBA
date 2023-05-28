@@ -1,0 +1,383 @@
+\ProvidesFile{lecture07.tex}[Lecture 7]
+
+
+\section{Fields}
+
+\subsection{Characteristic}
+
+\begin{definition}
+Let $F$ be a field.
+The characteristic of $F$ is the minimial positive integer $p$ such that
+\[
+\underbrace{1+\ldots + 1}_p = 0
+\]
+If there is no such $p$ the characteristic is said to be zero.
+The characteristic of $F$ is denoted by $\chr F$.
+\end{definition}
+
+I want to introduce a convenient notation, if we add an element $x\in F$ $n$ time, where $n\in \mathbb N$, we may denote the sum as follows
+\[
+n x = \underbrace{x+\ldots + x}_n
+\]
+In particular, the characteristic of $F$ is the smallest positive integer $p$ such that $p \cdot 1 = 0$.
+\begin{examples}
+\begin{enumerate}
+\item If $F = \mathbb Q$, then the sum $1+\ldots + 1$ is never zero.
+Hence, $\chr \mathbb Q = 0$.
+
+\item If $F = \mathbb Z_p$, then $p$ is the smallest positive integer such that $1 + \ldots + 1 = p \cdot 1 = 0$ in $\mathbb Z_p$.
+Hence, $\chr \mathbb Z_p = p$.
+\end{enumerate}
+\end{examples}
+
+\begin{claim}
+If $F$ is a field, then $\chr F$ is either $0$ or a prime number.
+\end{claim}
+\begin{proof}
+Suppose the characteristic is not zero.
+Assume that $\chr F = p = n m$ is not prime.
+Then
+\[
+0 = \underbrace{1+\ldots + 1}_{nm} = (\underbrace{1+\ldots + 1}_{n})(\underbrace{1+\ldots + 1}_{m}) = (n \cdot 1) (m \cdot 1)
+\]
+Moreover, the elements $n\cdot 1$ and $m\cdot 1$ are nonzero because $p = nm$ was the smallest one.
+But the product of the elements $n\cdot 1$ and $m \cdot 1$ is zero.
+This contradicts to $F$ being a field.
+\end{proof}
+
+\begin{remark}
+Suppose $F$ is a field.
+We have a unique ring homomorphism $\phi\colon \mathbb Z\to F$ by the rule $n \mapsto n \cdot 1$.
+Then the kernel of this homomorphism is an ideal of $\mathbb Z$.
+Every ideal of the ring is of the form $(p)$ for some $p\in \mathbb N$ (see Claim~\ref{claim::ZIdeals}).
+In this case, $p$ equals the characteristic of $F$.
+This explains the relation between the characteristic of a field and the ideals of the ring of integers.
+\end{remark}
+
+\begin{claim}
+\label{claim::FieldIdeals}
+Let $R$ be a commutative ring.
+Then, $R$ is a field if and only if there are only two ideals $0$ and $R$.
+\end{claim}
+\begin{proof}
+Suppose that $R$ is a field and $I\subseteq R$ is an ideal.
+If $I = 0$, then we are done.
+We may assume that $I$ contains a nonzero element and we should show that $I = R$.
+Let $x\in I$ be a nonzero element.
+Since $R$ is a field, there exists $x^{-1}\in R$.
+Since $I$ is an ideal $1 =x^{-1}x\in I$.
+Hence, for any $y\in R$, the element $y = y 1 \in I$.
+
+Now, suppose that $R$ contains only trivial ideals $0$ and $R$.
+Let $x\in R$ be a nonzero element.
+Then the set $I = \{rx \mid r\in R\}$ is an ideal of $R$.%
+\footnote{Here, it is important that $R$ is commutative.}
+Since there are only two ideals $0$ and $R$, $I$ must be one of them.
+Since $I$ contains a nonzero element, $I$ coincides with $R$.
+In particular, $1\in I$, that is $1 = rx$ for some $r\in R$.
+Since $R$ is commutative, $x$ is invertible and we are done.
+\end{proof}
+
+The latter claim means that we should study fields elements-wise because ideals distinguish nothing in this case.
+However, ideals somehow measure the difference between an arbitrary ring and a field.
+Less ideals a ring has, the closer the ring is to a field.
+
+\begin{claim}
+\label{claim::ZpField}
+A ring $\mathbb Z_n$ is a field if and only if $n$ is prime.
+\end{claim}
+\begin{proof}
+This is an immediate consequence of Claim~\ref{claim::ZnIdeals} and Claim~\ref{claim::FieldIdeals}.
+\end{proof}
+
+
+\begin{claim}
+\label{claim::PrimeSubfieldCharP}
+Suppose $F$ is a field of prime characteristic $p$.
+Then $F$ contains $\mathbb Z_p$ as a subfield.
+\end{claim}
+\begin{proof}
+The field $F$ contains the identity element $1\in F$.
+Let us consider the set $\{0, 1, 2\cdot 1, \ldots , (p-1)\cdot 1\}\subseteq F$.
+Then there is an obvious bijection between $\mathbb Z_p$ and the subset.
+We should show that the bijection is an isomorphism of rings.
+In order to do that, we need to show that
+\[
+n\cdot 1 + m \cdot 1 = (n+m\!\!\mod p)\cdot 1,\quad
+(n\cdot 1)(m\cdot 1) = (mn\!\!\mod p)\cdot 1
+\]
+Indeed, if $m+n = qp + r$, then
+\[
+n\cdot 1 + m \cdot 1 = (m+n)\cdot 1 = (qp) \cdot 1 + r\cdot 1 = q(p \cdot 1) + r\cdot 1 = r\cdot 1
+\]
+The second statement is shown in a similar way.
+\end{proof}
+
+\subsection{Field extension}
+
+Suppose $F$ is a field and $K$ is another field containing $F$ as a subfield.
+Then we will say that $K$ is an extension of $F$.
+In this case, $K$ may be considered as a vector space over $F$.
+Hence, there is a dimension of $K$ over $F$.
+The dimension of $K$ over $F$ is called the degree of $K$ over $F$ and is denoted by $[K:F] = \dim_F K$.
+
+
+We need a method to produce fields.
+The following claim explains one of the most useful constructions.
+
+\begin{claim}
+\label{claim::PolyQuotField}
+Let $F$ be a field, $f\in F[x]\setminus F$ be a polynomial.
+The ring $F[x]/(f)$ is a field if and only if $f$ is irreducible nonzero polynomial.
+\end{claim}
+\begin{proof}
+Suppose that $f$ is reducible.
+Then $f = gh$, where $\deg g < \deg f$ and $\deg h < \deg f$.
+Then $h\neq 0$ in $F[x]/(f)$ as well as $g\neq 0$ in $F[x]/(f)$.
+But $gh = f = 0$ in $F[x]/(f)$.
+Hence, $g$ and $h$ are nonzero zero divisors.
+But zero divisors are not invertible.
+The latter contradicts to the definition of a field.
+
+If $f$ is irreducible we should show that any nonzero $g\in F[x]/(f)$ is invertible.
+Since $\deg g < \deg f$ and $g\neq 0$, $f$ and $g$ are coprime.
+Hence, $1 = (g, f)$.
+By Claim~\ref{claim::PolyGCD} item~(3), it follows that $1 = ug + vf$ for some $u,v\in F[x]$.
+But the latter means that $1 = ug\pmod f$ and hence, $u = g^{-1}$ in $F[x]/(f)$.
+\end{proof}
+
+\begin{remarks}
+\begin{itemize}
+\item It is also worth mentioning that the element $x\in F[x]/(p)$ is a root of the polynomial $p$ in the field $F[x]/(p)$.
+Indeed, $p(x) = 0$ in $F[x]/(p)$ be definition.
+
+\item Let us consider the field of real numbers $\mathbb R$.
+Then the polynomial $x^2 + 1\in \mathbb R[x]$ is irreducible.
+Hence $\mathbb R[x]/(x^2 +1)$ is a field and the element $x$ becomes a root of $x^2 + 1$.
+Explicitly elements of $\mathbb R[x]/(x^2 + 1)$ are of the form $a + bx$, where $a, b\in \mathbb R$ and we also know that $x^2 = -1$.
+Hence, this is the usual model for the complex numbers.
+
+\item If $\deg f = n$, then the elements $1, x, \ldots, x^{n-1}$ form a basis of $F[x]/(f)$ over the field $F$.
+In particular, $\dim_F F[x]/(f) = \deg f$.
+\end{itemize}
+\end{remarks}
+
+
+\paragraph{Extension by a root}
+
+Here I am discussing a standard way to produce a larger field containing a root of a given polynomial.
+Suppose $F$ is a field and $f\in F[x]$ is a polynomial.
+Now, I want to produce a field $L$ containing $F$ and an element $\alpha \in L$ such that $f(\alpha) = 0$.
+If we are lucky enough and $F$ already has such an element, then there is nothing to do.
+However, the problem is not trivial in case there is no such element inside $F$.
+We already know (see Claim~\ref{claim::PolyUFD}) that $f$ is a product of irreducible polynomials, that is $f = p_1\ldots p_n$ ($p_i$ need not be different here).
+It is enough to solve the problem for some $p_i$ (if we find an extension $L$ containing a root of $p_1$, then it will be an extension containing a root of $f$).
+Hence, we may assume that $f$ is irreducible.
+
+Let us define $L$ to be the ring of remainders modulo $f$, that is $L = F[x]/(f)$.
+By Claim~\ref{claim::PolyQuotField}, $L$ is a field.
+The element $x\in F[x]/(f)$ will be denoted by $\alpha$.
+Let us show that $\alpha$ is a root of $f$.
+Indeed, if we consider $f(\alpha)$ in $L$, we have
+\[
+f(\alpha) = f(x) = 0 \pmod f
+\]
+That is $f(\alpha) = 0$ in $L$.
+It should be noted that the degree of $L$ over $F$ coincides with $\deg f$.
+
+
+\subsection{Finite fields}
+
+Now, I want to deal with finite field only, that is with fields consisting of finitely many elements.
+
+\begin{claim}
+If $F$ is a finite field, then its characteristic is not zero.
+In particular, it contains $\mathbb Z_p$ for $p = \chr F$.
+\end{claim}
+\begin{proof}
+If $F$ is finite, then the ring homomorphism $\mathbb Z \to F$ by the rule $n \mapsto n \cdot 1$ cannot be injective.
+Hence its kernel is of the form $(p)$ for some nonzero $p$.
+The last statement follows from Claim~\ref{claim::PrimeSubfieldCharP}.
+\end{proof}
+
+\begin{claim}
+Suppose $F$ is a finite field and $\chr F = p$.
+Then, $|F| = p^n$, where $n = [F:\mathbb Z_p]$.
+\end{claim}
+\begin{proof}
+By Claim~\ref{claim::PrimeSubfieldCharP}, $F$ contains $\mathbb Z_p$ as a subfield.
+Now, we consider $F$ as a vector space over $\mathbb Z_p$.
+Since $F$ is finite, it has finite dimension.
+Therefore, $F$ is isomorphic to $\mathbb Z_p^n$ as a vector space.
+But, $\mathbb Z_p^n$ has exactly $p^n$ elements, where $n$ is the dimension of $F$ over $\mathbb Z_p$.
+\end{proof}
+
+\begin{claim}
+Let $F$ be a finite field.
+Then the group $F^*$ is cyclic of order $|F| - 1$.
+\end{claim}
+\begin{proof}
+The group $F^*$ is a finite abelian group.
+Hence, it is isomorphic to $\mathbb Z_{d_1}\times \ldots \times \mathbb Z_{d_k}$, where $d_1|\ldots |d_k$ (see Claim~\ref{claim::FAGClass}).
+In particular, for every element of the group $F^*$ we have $x^{d_k} = 1$.
+Thus, all elements of the group $F^*$ are the roots of the polynomial $x^{d_k}-1$.
+Because of the unique factorization property, each polynomial $f$ has at most $\deg f$ roots.
+Hence, $|F^*|\leqslant d_k$.
+From the other hand $|F^*| = d_1\ldots d_k$.
+The only way this is possible is if $d_1 = \ldots =d_{k-1} = 1$.
+That is $F^*$ is isomorphic to $\mathbb Z_{d_k}$.
+\end{proof}
+
+There is a very important classification result (I am not going to prove it).
+
+\begin{claim}
+For any prime number $p$ and any positive integer $n$, there exists a unique (up to isomorphism) field $F$ consisting of $p^n$ elements.
+\end{claim}
+
+Since there is a unique field of $p^n$ elements, it has a special name $\mathbb F_{p^n}$.
+In particular, $\mathbb F_p = \mathbb Z_p$.
+However, it should be noted that $\mathbb F_{p^n}\not\simeq\mathbb Z_{p^n}$, for example, because $\mathbb Z_{p^n}$ contains zero divisors.
+
+A good question is how to produce all finite fields.
+Suppose we want to produce a field $F$ such that $|F| = p^n$ for some prime $p$ and positive integer $n$.
+A starting point is the field $\mathbb F_p = \mathbb Z_p$.
+We should find an irreducible polynomial $f\in \mathbb Z_p[x]$ of degree $n$.
+Then, the required field is $\mathbb F_{p^n} = \mathbb Z_p[x]/(f)$.
+It should be noted that there could be many different irreducible polynomials of degree $n$ over $\mathbb Z_p$.
+However, the resulting fields will be isomorphic.
+How to choose $f$?
+Simply take anyone or the most convenient one for your purposes.
+
+\begin{example}
+Let us produce $\mathbb F_4$.
+The base field is $\mathbb Z_2$.
+There is only one irreducible polynomial of degree $2$, that is $x^2 + x + 1 \in \mathbb Z_2[x]$.
+Then the required field is 
+\[
+\mathbb F_4 = \mathbb Z_2[x]/(x^2 + x + 1) = \{a + b x\mid a, b\in \mathbb Z_2\}
+\]
+The addition is given by the coordinate-wise addition.
+In order to compute a product of any two elements of $\mathbb F_4$, it is enough to compute products of all powers of $x$.
+The products $1\cdot 1 = 1$ and $1\cdot x = 1$ are simple to compute.
+Now, we need to compute $x\cdot x$.
+It equals $x^2 = 1 + x  \pmod{x^2 + x + 1}$.
+In general, a product is computed like this
+\[
+(a+bx)(c+d x) = ac + ad x + bc x + bd x^2 = ac + ad x + bc x + bd (1+x) = ac + bd + (ad + bc + bd) x
+\]
+\end{example}
+
+\begin{remarks}
+\begin{itemize}
+\item 
+The field $\mathbb Z_p$ is contained in $\mathbb F_{p^n}$.
+In particular, the group $\mathbb Z_p^*$ is contained in the group $\mathbb F_{p^n}^*$.
+As we mentioned already in Section~\ref{section::DiscreteLog}, the discrete logarithm problem is hard to solve in $\mathbb Z_p^*$.
+This implies that the discrete logarithm problem must be hard for $\mathbb F_{p^n}^*$.
+Indeed, if it were simple to solve $g^x = h$ for $x$, when we are given $g,h \in \mathbb F_{p^n}^*$, we could take $g, h\in \mathbb Z_p^* \subseteq \mathbb F_{p^n}^*$.
+This would imply that the discrete logarithm problem for $\mathbb Z_p^*$ were simple.
+The immediate consequence of this observation is that we can use $\mathbb F_{p^n}^*$ in the Diffie-Hellman approach discussed before.
+
+\item
+If we want to use $\mathbb F_{p^n}^*$ in cryptography, we have to find a generator of the group.
+If we produced the field in the form $\mathbb Z_p[x]/(f)$ for some irreducible $f\in \mathbb Z_p[x]$ of degree $n$, a good candidate for the generator of $\mathbb F_{p^n}^*$ would be $x$.
+However, the element $x$ of $\mathbb F_{p^n}^*$ need not be a generator.
+It depends on the choice of $f$.
+
+For example, if we take $\mathbb Z_3$, there are three irreducible polynomials of degree $2$: $f_1 = x^2+1$, $f_2 = x^2 + x - 1$, $f_3 = x^2 - x - 1$.
+If we use the first polynomial, we get $\mathbb F_9 = \mathbb Z_3[x]/(x^2 + 1)$.
+The group $\mathbb F_9^* \simeq \mathbb Z_8$, hence the generator must have order $8$.
+However, $x^4 = (x^2)^2=(-1)^2 = 1$ in this case.
+Thus, the order of $x$ is $4$ and it is not a generator.
+From the other hand, we can use $f_2$ and get $\mathbb F_9 = \mathbb Z_3[x]/(x^2+x-1)$ or $f_3$ and get  $\mathbb F_9 = \mathbb Z_3[x]/(x^2-x-1)$.
+In both cases, a direct computation shows that $x$ is a generator of $\mathbb F_9^*$.
+\end{itemize}
+\end{remarks}
+
+\subsection{Galois random generator}
+
+There is a notion of Linear-feedback shift register.
+This is a scheme to generate random numbers.
+It is usually presented in two different forms: Fibonacci and Galois.
+They are dual to each other in some sense that I am not going to explain here.
+The Galois scheme is a bit more complicated but we can easily describe it using the language of finite fields.
+
+Suppose we have a finite alphabet $\mathbb Z_p = \{0,1,\ldots,p-1\}$ and we want to produce a random sequence of length $n$ consisting of these elements, that is we want randomly choose an element of $\mathbb Z_p^n$.
+A key observation here is that we can identify $\mathbb Z_p^n$ with $\mathbb F_{p^n}$ and choose randomly an element of a finite field instead.
+Let me describe the whole process.
+
+
+Suppose $p$ is a prime number and $n$ is a positive integer.
+We choose an irreducible polynomial $f\in \mathbb Z_p[x]$ of degree $n$ and produce $\mathbb F_{p^n} = \mathbb Z_p[x]/(f)$.
+By definition
+\[
+\mathbb F_{p^n} = \{a_0 + a_1 x + \ldots + a_{n-1}x^{n-1}\mid a_i\in \mathbb Z_p\}
+\]
+Hence, every element of the field is described as a sequence $(a_0, a_1,\ldots,a_{n-1})$.
+Now, we choose a generator $g\in \mathbb F_{p^n}^*$.
+This is an unpleasant step but we have to make it only once.
+Usually, we choose $f$ in such a way that $x$ is a generator and take $g$ to be $x$.
+Now, we generate a sequence $g, g^2, g^3, g^4,\ldots$.
+Each power of $g$ corresponds to a sequence of coefficients as above.
+We can also start from some fixed power of $g$, that is, we fix a power $k\in \mathbb N$, and generate a sequence $g^k, g^{k+1}, g^{k+2}, \ldots$.
+In practice, we usually choose a some $h\in \mathbb F_{p^n}^*$ and generate $hg, hg^2, hg^3, hg^4,\ldots$.
+Since $h = g^k$ for some $k$, this is exactly the same approach.
+
+\paragraph{Matrix form}
+
+As before, we assume that
+\[
+\mathbb F_{p^n} = \mathbb Z_p[x]/(f)= \{a_0 + a_1 x + \ldots + a_{n-1}x^{n-1}\mid a_i\in \mathbb Z_p\}
+\]
+In this case, $1, x, x^2,\ldots,x^{n-1}$ is a basis of $\mathbb F_{p^n}$ over $\mathbb Z_p$.
+Suppose, that the polynomial $f = x^n + c_{n-1}x^{n-1} +\ldots + c_1 x + c_0$ is chosen in such a way that $x$ is a generator of $\mathbb F_{p^n}^*$.
+The map $\phi \colon \mathbb F_{p^n}\to \mathbb F_{p^n}$ given by $h \mapsto xh$ is a linear map.
+Let us write the matrix for $\phi$ in the basis above
+\[
+\phi(1, x,\ldots, x^{n-2}, x^{n-1}) = (1, x,\ldots, x^{n-2}, x^{n-1})
+\begin{pmatrix}
+{0}&{0}&{\ldots}&{0}&{-c_0}\\
+{1}&{0}&{\ldots}&{0}&{-c_1}\\
+{0}&{1}&{\ddots}&{0}&{-c_2}\\
+{\vdots}&{\vdots}&{\ddots}&{\vdots}&{\vdots}\\
+{0}&{0}&{\ldots}&{1}&{-c_{n-1}}\\
+\end{pmatrix}
+\]
+We denote this matrix by $A$.
+An element $h= a_0 + a_1 x + \ldots + a_{n-1}x^{n-1}$ is described by the vector $v = (a_0,a_1,\ldots,a_{n-1})^t$.
+Then, the element $xh$ has coordinates described by the vector $Av$.
+Hence, the random generator is described as follows.
+We fix some vector $v = (a_0,a_1,\ldots,a_{n-1})^t$ and produce a sequence $v, Av, A^2v, A^3v, \ldots$.
+The Fibonacci approach is similar but we use $A^t$ instead of $A$.
+There is a way to describe Fibonacci approach in terms of the field $\mathbb F_{p^n}$ but I do not want to do this.
+
+\subsection{Stream cipher}
+
+There is an application of random generators in cryptography.
+I want to discuss stream ciphers.
+Usually, if you want to communicate, you have a secure channel and an open channel.
+And it is more expensive to transfer data via the secure channel because of the computational overhead.
+Hence, you want to minimize using the secure channel.
+However, you still want to have some security transferring the data via the open channel.
+You want it to be chip, fast, and secure.
+Here is the method.
+
+We fix a two symbol alphabet $\mathbb Z_2=\{0,1\}$.
+Our message is a sequence $a_0, a_1, a_2,a_3,\ldots$.
+Suppose, we have a random generator $S\colon \mathbb N \to \mathbb Z_2$, then we can generate a sequence $s_0 = S(0), s_1 = S(1), s_2 = S(2),\ldots$.
+Then, we can encode the data replacing $a_k$  by $d_k = a_k + s_k\pmod 2$ and broadcast $d_k$ instead.
+In order to decode the message, we compute $a_k = d_k + s_k \pmod 2$.
+However, this means that the other person must know the whole sequence $s_k$.
+Instead of transferring the sequence $s_k$ using a secure channel, we send a copy of the generator via the secure channel and then broadcast the information using above method via the open channel.
+
+Let me demonstrate the basic transferring process using the following diagram
+\[
+\xymatrix{
+	{}&{\boxed{\text{Random Generator}}}\ar[d]^{s_k}\ar@{<->}[rr]^{\text{syncronized}}&{}&{\boxed{\text{Random Generator}}}\ar[d]^{s_k}&{}\\
+	{\boxed{\text{Sender}}}\ar[r]^{a_k}&{\boxed{+}}\ar[rr]^{d_k = a_k + s_k}&{}&{\boxed{+}}\ar[r]^{a_k = d_k + s_k}&{\boxed{\text{Receiver}}}\\
+}
+\]
+
+This method can be absolutely insecure if all the components are not well chosen.
+From the other hand, modern standards of GSM use some enhanced variants of this idea.
+So, the appropriate use of this approach leads to very reliable results.
