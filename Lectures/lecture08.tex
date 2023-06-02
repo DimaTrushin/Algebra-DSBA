@@ -1,0 +1,343 @@
+\ProvidesFile{lecture08.tex}[Lecture 8]
+
+
+\section{Gr\"obner bases}
+
+Now I want to discuss polynomials in several variables.
+One of the main reason why we love polynomials in one variable is the Euclidean division algorithm.
+It turns out that we can solve almost any problem effectively using this simple division algorithm.
+However, if we switch to polynomials in several variables there is no Euclidean division algorithm (one can even prove this rigorously).
+Instead of rubbing our tearing eyes regretting about switching to several variables we will follow a better plan.
+We can find a procedure very similar to Euclidean division algorithm, it is called reduction.
+Moreover, we will be able to reduce a polynomial with respect to a family of polynomials, that is, we will divide one polynomials by a family of polynomials with remainder.
+There will be one problem.
+The division process is not unique and we may get different remainders sometimes.
+At this point we call Gro\"ebner basis to the rescue.
+A Gr\"obner basis will provide us with a good reduction algorithm and ensure the uniqueness of all remainders.
+
+\subsection{Polynomials in several variables}
+
+Let $F$ be a field.
+A polynomial $f$ in variables $x_1,\ldots,x_n$ is a picture
+\[
+f = \sum_{k_1,\ldots,k_n\geqslant 0} a_{k_1\ldots k_n} x_1^{k_1} \ldots x_n^{k_n},\quad a_{k_1\ldots k_n} \in F
+\]
+where only finitely many coefficients are nonzero.
+The addition and multiplication are given by the usual rules.
+The set of all polynomials in variables $x_1,\ldots,x_n$ with coefficients in $F$ will be denoted by $F[x_1,\ldots,x_n]$.
+The set $F[x_1,\ldots,x_n]$ with addition and multiplication is a commutative ring.
+
+The expression $m = x_1^{k_1}\ldots x_n^{k_n}$ is called monomial.
+The degree of the monomial is $\deg m = k_1+ \ldots + k_n$.
+The degree of a polynomial $f$ is the maximum of the degrees of all monomials appearing in $f$ with nonzero coefficient.
+The degree of the zero polynomial is $-\infty$ as in the case of one variable.
+A straightforward computation shows that, if $f,g\in F[x_1,\ldots,x_n]$, then $\deg(fg) = \deg f + \deg g$.
+A monomial multiplied by an element of the field $F$ is called a term.
+Hence, a polynomial is always a sum of terms.
+
+\subsection{Monomial orderings}
+
+The first ingredient for the general division algorithm is the ordering on monomials.
+We need to know when a monomial is less than another one.
+There are many different orderings.
+However, I am going to simplify your life and will stick to lexicographical order only.
+
+\begin{definition}
+We want to define a lexicographical order on monomials.
+\begin{enumerate}
+\item We need to fix an ordering on the variables $x_1,\ldots,x_n$.
+For example $x_1 > x_2 > \ldots > x_n$.
+However, we can take any permutation of the variables.
+
+\item Suppose we fixed the ordering $x_1 > \ldots > x_n$ on the variables.
+Now, we are ready to define the corresponding lexicographical order $\Lex(x_1,\ldots,x_n)$ on the monomials.
+\end{enumerate}
+Let $m = x_1^{k_1}\ldots x_n^{k_n}$ and $m'= x_1^{k_1'}\ldots x_n^{k_n'}$ be two monomials.
+Then we compare $k_1$ and $k_1'$.
+If $k_1 > k_1$, then $m > m'$.
+If $k_1 < k_1'$, then $m < m'$.
+If $k_1 = k_1'$, then we compare $k_2$ and $k_2'$ and repeat the algorithm above.
+In particular, $m > m'$ if and only if there exists $1\leqslant j \leqslant n$ such that $k_1 = k_1',\ldots, k_{j-1} = k_{j-1}'$ and $k_j > k_j'$.
+\end{definition}
+
+\begin{examples}
+Consider the ring $F[x, y, z]$ and monomials $m_1 = x^2 y z^4$, $m_2 = x y^3 z$, and $m_3 = x y z^5$.
+There are $6$ ways to order the variables $x, y, z$.
+In each case, we define the corresponding lexicographical order and compare the monomials.
+\begin{enumerate}
+\item If $x > y > z$, then $m_1 > m_2 > m_3$.
+
+\item If $x > z > y$, then $m_1 > m_3 > m_2$.
+
+\item If $y > x > z$, then $m_2 > m_1 > m_3$.
+
+\item If $y > z > x$, then $m_2 > m_3 > m_1$.
+
+\item If $z > x > y$, then $m_3 > m_1 > m_2$.
+
+\item If $z > y > x$, then $m_3 > m_1 > m_2$.
+\end{enumerate}
+\end{examples}
+
+
+\begin{remarks}
+Here I want to list several properties of any lexicographical order.
+All monomials below depend on $n$ variables and we are given a lexicographical order.
+\begin{enumerate}
+\item For any monomial $m\neq 1$, we have $1 < m$.
+
+\item If $m$ and $m'$ are monomials such that $m'$ divides $m$, that is, $m = m' t$ for some other monomial $t$, then $m' \leqslant m$ and if $t\neq 1$, the inequality is strict.
+
+\item if $m, t, s$ are monomials such that $m \leqslant t$, then $ms \leqslant ts$ and if $m < t$, then $ms < ts$.
+
+\end{enumerate}
+\end{remarks}
+
+
+
+\begin{claim}
+\label{claim::LexWellOrder}
+Suppose we fixed a lexicographical order on monomials in $n$ variables and $m_1 > m_2 > \ldots > m_k > \ldots$ is a strictly descending chain of monomials in variables $x_1,\ldots,x_n$.
+Then the chain is finite.
+\end{claim}
+\begin{proof}
+First of all, we may rename the variables $x_1,\ldots,x_n$ such that they go in the decreasing order $x_1>x_2>\ldots>x_n$.
+Now, suppose the contrary holds and there is an infinite sequence $m_1>m_2>\ldots>m_k>\ldots$.
+I will write the monomials explicitly on the following diagram.
+\[
+\text{First}\quad
+\xymatrix@R=10pt@C=10pt{
+	{x_1^{k_1(1)}}&{x_2^{k_2(1)}}&{\ldots}&{x_n^{k_n(1)}}\\
+	{x_1^{k_1(2)}}\ar@{}[u]|{\rotatebox{90}{$\leqslant$}}&{x_2^{k_2(2)}}&{\ldots}&{x_n^{k_n(2)}}\\
+	{\vdots}\ar@{}[u]|{\rotatebox{90}{$\leqslant$}}&{\vdots}&{}&{\vdots}\\
+	{x_1^{k_1(r_1)}}\ar@{}[u]|{\rotatebox{90}{$\leqslant$}}&{x_2^{k_2(r_1)}}&{\ldots}&{x_n^{k_n(r_1)}}\\
+	{x_1^{k_1(r_1+1)}}\ar@{=}[u]&{x_2^{k_2(r_1+1)}}&{\ldots}&{x_n^{k_n(r_1+1)}}\\
+}
+\quad\text{Second}\quad
+\xymatrix@R=10pt@C=10pt{
+	{x_1^{k_1}}&{x_2^{k_2(r_1)}}&{\ldots}&{x_n^{k_n(r_1)}}\\
+	{x_1^{k_1}}\ar@{=}[u]&{x_2^{k_2(r_1+1)}}\ar@{}[u]|{\rotatebox{90}{$\leqslant$}}&{\ldots}&{x_n^{k_n(r_1+1)}}\\
+	{\vdots}\ar@{=}[u]&{\vdots}\ar@{}[u]|{\rotatebox{90}{$\leqslant$}}&{}&{\vdots}\\
+	{x_1^{k_1}}\ar@{=}[u]&{x_2^{k_2(r_2)}}\ar@{}[u]|{\rotatebox{90}{$\leqslant$}}&{\ldots}&{x_n^{k_n(r_2)}}\\
+	{x_1^{k_1}}\ar@{=}[u]&{x_2^{k_2(r_2+1)}}\ar@{=}[u]&{\ldots}&{x_n^{k_n(r_2+1)}}\\
+}
+\]
+First, we look at the degree of $x_1$.
+By the definition of the lexicographical order the degrees must go in the descending order, that is, $k_1(1) \geqslant k_1(2)\geqslant \ldots$.
+However, this is a sequence of natural numbers.
+Hence, must stabilize in the sense there is a number $r_1$ such that $k_1(r_1) = k_1(r_1+1) = \ldots$.
+We denote this number by $k_1$.
+Hence, for all monomials $m_i$ with $i \geqslant r_1$, the degree of $x_1$ is $k_1$.
+
+Now, we look at the degree of $x_2$ and the sequence of monomials $m_{r_1}>m_{r_1+1}>\ldots$.
+Since the degree of $x_1$ is the same for all monomials, we must have $k_2(r_1)\geqslant k_2(r_1+1)\geqslant \ldots$.
+Again, this is a descending chain of natural numbers.
+Hence, there is a number $r_2 > r_1$ such that $k_2(r_2) = k_2(r_2+1) = \ldots$.
+We denote this number by $k_2$.
+Hence, for all monomials $m_i$ with $i \geqslant r_2$, the  degrees of $x_1$ and $x_2$ are  $k_1$ and $k_2$, respectively.
+
+We may proceed in the similar way and find $r_3 > r_2$ such that all degrees of $x_3$ are the same for $m_i$ whenever $i\geqslant r_3$.
+Then we find $r_4 > r_3$ such that all degrees of $x_4$ are the same for $m_i$ whenever $i \geqslant r_4$ and so on.
+Finally, we find $r_n > r_i$ such that all the degrees of all variables are the same for the monomials $m_i$ such that $i \geqslant r_n$.
+But then all such monomials are equal.
+In particular, the comparison $m_{r_n}>m_{r_n+1}$ is impossible.
+This contradiction completes the proof.
+\end{proof}
+
+
+\begin{remark}
+There is a common misunderstanding here.
+There is no infinite strictly descending chain of monomials.
+However, for a given monomial, there are infinitely many strictly smaller ones as the following example shows.
+Let us consider $\mathbb Q[x, y]$ with the order $x > y$ and the corresponding lexicographical order.
+Then there are infinitely many monomials strictly smaller than $x^2$.
+Indeed, all monomials of the form $xy^n$ are strictly smaller than $x^2$.
+Hence, we may produce a sequence
+\[
+x^2 > xy^n > xy^{n-1} > \ldots > xy > x > y^m > y^{m-1} > \ldots > y > 1
+\]
+Each descending chain of monomials starting at $x^2$ is finite but the length of the chain can be arbitrary long.
+\end{remark}
+
+
+\subsection{Reduction}
+
+Since we know how to compare the monomials, we are ready to define the reduction algorithm.
+First we need to define an elementary reduction and then an arbitrary reduction.
+Let me recall the context.
+We are given a field $F$, a polynomial ring $F[x_1,\ldots,x_n]$, and a lexicographic ordering on the monomials in $n$ variables.
+
+
+\begin{definition}
+Suppose $F$ is a field, we fix a lexicographical order on the monomials of $F[x_1,\ldots,x_n]$, and $f\in F[x_1,\ldots,x_n]$ is an arbitrary nonzero polynomial.
+Then, the polynomial $f$ can be written as
+\[
+f = c_1 m_1 + c_2 m_2 + \ldots + c_k m_k,\quad c_i\in F,\;m_i\;\text{are monomials such that}\; m_1 > m_2 >\ldots>m_k
+\]
+The term $c_1m_1$ is called the leading term and will be denoted by $T(f)$.
+The monomial $m_1$ is called the leading monomial of $f$ and will be denoted by $M(f)$.
+The coefficient $c_1$ is called the leading coefficient of $f$ and is denoted by $C(f)$.
+It is clear by definition that $T(f) = C(f) M(f)$.
+The part $c_2m_2 + \ldots + c_k m_k$ is called the tail of $f$ and will be denoted by $f_0$.
+Hence, $f$ can be written as $f = T(f) + f_0$.
+\end{definition}
+
+
+\begin{definition}
+Suppose $g\in F[x_1,\ldots,x_n]$ is a nonzero polynomial and $f\in F[x_1,\ldots,x_n]$ is any polynomial.
+Assume that
+\[
+f= c_1m_1 + \ldots + c_i m_i + \ldots + c_k m_k,\quad c_i\in F,\;m_i\;\text{are monomials such that}\; m_1 > m_2 >\ldots>m_k
+\]
+and
+\[
+g = C(g) M(g) + g_0 = T(g) + g_0
+\]
+We take $m$ to be $m_i$, that is a monomial in $f$ and assume that $m$ is divisible by the leading monomial of $g$, that is $m = t M(g)$.
+We define an elementary reduction of $f$ with respect to $g$ as 
+\[
+f\stackrel{g}{\longrightarrow} f' = f - \frac{c_i}{C(g)}t g
+\]
+The polynomial $f'$ is the result of the elementary reduction.
+\end{definition}
+
+In short, the elementary reduction works as follows: we find a monomial  $m_i$ of $f$ divisible by $M(g)$ and replace it by the tale of $g$ multiplied by $- c_i m_i / T(g)$.
+
+\begin{example}
+Let us consider the ring $\mathbb Q[x, y, z]$, $f = xyz$, $g_1 = xy - z$, and $g_2 = yz - 1$.
+Then
+\[
+f\stackrel{g_1}{\longrightarrow} xyz - z(xy - z) = z^2,
+\quad\text{or}\quad
+f\stackrel{g_2}{\longrightarrow} xyz - x(yz - 1) = x
+\]
+\end{example}
+
+\begin{definition}
+Suppose $G\subseteq F[x_1,\ldots,x_n]\setminus \{0\}$ is a set of polynomials and $f, f'\in F[x_1,\ldots,x_n]$ are any polynomials.
+We say that $f$ is reducible to $f'$ with respect to $G$ if there is a finite sequence of elementary reductions as below%
+\footnote{The polynomials $g_1,\ldots,g_k$ need not be distinct.}
+\[
+f\stackrel{g_1}{\longrightarrow}f_1\stackrel{g_2}{\longrightarrow}f_2\stackrel{g_3}{\longrightarrow}\ldots \stackrel{g_k}{\longrightarrow}f_k = f'\quad\text{where}\;g_i \in G
+\]
+In this case we will write $f\stackrel{G}{\rightsquigarrow} f'$.
+
+If the polynomial $f'$ is not reducible by any $g\in G$, we say that $f'$ is a remainder of $f$ with respect to $G$.
+\end{definition}
+
+
+\begin{remarks}
+\begin{enumerate}
+\item A polynomial $f'$ is not reducible by any $g\in G$ if and only if every monomial of $f'$ is not divisible by $M(g)$ for any $g\in G$.
+
+\item It should be noted that there could be different remainders of a polynomial $f$ with respect to a set $G$.
+Here is an example.
+We deal with the ring $\mathbb Q[x, y, z]$ and the lexicographical order is given by $x > y > z$.
+Suppose $f = xyz$, $g_1 = xy - 1$, $g_2 = yz - 1$, and $G = \{g_1, g_2\}$.
+Then,
+\[
+f\stackrel{g_1}{\longrightarrow}xyz - z(xy - 1) = z
+\quad\text{and}\quad
+f\stackrel{g_2}{\longrightarrow}xyz - x(yz - 1) = x
+\]
+Then by definition $f\stackrel{G}{\rightsquigarrow} z$ and $f\stackrel{G}{\rightsquigarrow} x$.
+Moreover, the polynomials $z$ and $x$ are not reducible with respect to $G$.
+Hence, they are different remainders of $f$ with respect to $G$.
+\end{enumerate}
+\end{remarks}
+
+Hence, in general a remainder of a polynomial $f$ with respect to some set of polynomials $G$ is not unique.
+The latter happens because the set $G$ was not good enough.
+This leads us to the notion of Gr\"obner basis.
+
+\begin{definition}
+[Gr\"obner basis]
+Suppose $F$ is a field, $G\subseteq F[x_1,\ldots,x_n]\setminus\{0\}$, and we fix a lexicographical order on the monomials.%
+\footnote{It should be noted the the notion of a Gr\"obner basis highly depends on the choice of the order.
+If we change the ordering on the variables, the set $G$ may become a Gr\"obner basis even if it was not one with respect to the old ordering and vice verse.}
+We say that $G$ is a Gr\"obner basis if for every $f\in F[x_1,\ldots,x_n]$ all its remainders are the same.
+\end{definition}
+
+There is a hidden problem here.
+Suppose we are given a polynomial $f$ and a set of polynomials $G$.
+If $f$ is reducible with respect to $G$ we can make an elementary reduction and get $f_1$.
+Then if $f_1$ is reducible, we can make another elementary reduction and get $f_2$ and so on.
+A natural question is: does the process stop?
+The answer to this question is yes as the Claim~\ref{claim::ReductFin} shows.
+
+\begin{examples}
+We will see a lot of examples of Gr\"obner bases latter.
+Now, I want to give some simple examples without explanations because we are not ready to prove that the examples below are Gr\"obner bases.
+\begin{enumerate}
+\item For any polynomial ring $F[x_1,\ldots,x_n]$ with any lexicographical order the set $G = \{g\}$ consisting of one nonzero polynomial is always a Gr\"obner basis.
+
+\item Suppose $F[x,y,z,w]$ and we are given any lexicographical order, then the set $G = \{xy - 1, zw + 1\}$ is a Gr\"obner basis.
+This happens because the leading monomials of the polynomials of $G$ are coprime.
+\end{enumerate}
+\end{examples}
+
+
+\begin{definition}
+Suppose $F$ is a field and we fix some lexicographical order on the monomials in $n$ variables.
+As before, each polynomial $f\in F[x_1,\ldots,x_n]$ can be written as
+\[
+f = c_1 m_1 + c_2 m_2 + \ldots + c_k m_k,\quad c_i\in F,\;m_i\;\text{are monomials such that}\; m_1 > m_2 >\ldots>m_k
+\]
+We denote its $i$-th largest monomial $m_i$ by $M_i(f)$.
+In particular, $M_1(f)$ is the leading monomial of $f$, $M_2(f)$ is the next largest monomial of $f$ etc.
+The $i$-th largest monomial need not exist if $f$ contains less than $i$ monomials.
+\end{definition}
+
+
+
+\begin{claim}
+\label{claim::MkReduct}
+Suppose $F$ is a field, we are given $F[x_1,\ldots,x_n]$, and some lexicographical order is fixed.
+Suppose $f, f',g\in F[x_1,\ldots,x_n]$ are such that $f\stackrel{g}{\longrightarrow}f'$ and $M_1(f) = M_1(f'), \ldots, M_{k-1}(f) = M_{k-1}(f')$, and monomials $M_k(f)$ and $M_k(f')$ exist.
+Then, $M_k(f) \geqslant M_k(f')$.
+\end{claim}
+\begin{proof}
+Suppose $f = c_1 m_1 + \ldots + c_{k-1} m_{k-1} + c_km_k +\ldots + c_s m_s$, where $c_i\in F$ and $m_i$ are monomials written in decreasing order with respect to the lexicographical order.
+The polynomial $f'$ is obtained from $f$ via one elementary reduction.
+The latter means there is a monomial $m_i$ in $f$ divisible by $M(g)$ and we replace $m_i$ by a linear combination of smaller monomials.
+By the hypothesis the first $k-1$ monomials of $f$ and $f'$ are the same.
+Hence, $i\geqslant k$.
+If $i>k$ then, the $k$-th monomial of $f'$ is the same as in $f$.
+This means that $M_k(f) = M_k(f')$.
+If $i = k$, then we replaced $m_k$ by a linear combination of smaller monomials.
+For example the result may look like this:
+\[
+\xymatrix@R=8pt@C=10pt{
+	{f}\ar@{<->}[rr]&{}&{m_1}&{\ldots}&{m_{k-1}}&{m_k}&{}&{m_{k+1}}&{}&{\ldots}&{m_s}&{}\\
+	{f'}\ar@{<->}[rr]&{}&{m_1}&{\ldots}&{m_{k-1}}&{}&{m'_k}&{m'_{k+1}}&{m'_{k_2}}&{\ldots}&{}&{m'_{s'}}\\
+}
+\]
+But then, the monomial $m'_k = M_k(f')$ and is strictly smaller than $m_k = M_k(f)$ and we are done.
+\end{proof}
+
+\begin{claim}
+\label{claim::ReductFin}
+Suppose $F$ is a field, we are given $F[x_1,\ldots,x_n]$, and some lexicographical order is fixed.
+Then, for every polynomial $f\in F[x_1,\ldots,x_n]$ and any subset $G\subseteq F[x_1,\ldots,x_n]\setminus\{0\}$, any sequence of elementary reductions of $f$ with respect to $G$ is finite.
+\end{claim}
+\begin{proof}
+Suppose the contrary holds and there is an infinite sequence of elementary reductions
+\[
+f\stackrel{g_1}{\longrightarrow}f_1\stackrel{g_2}{\longrightarrow}f_2\stackrel{g_3}{\longrightarrow}\ldots \stackrel{g_k}{\longrightarrow}f_k\stackrel{g_{k+1}}{\longrightarrow}\ldots
+\]
+Let us consider the sequence of leading monomials $M_1(f),M_1(f_1), M_1(f_2),\ldots$.
+Applying Claim~\ref{claim::MkReduct} in case $k = 1$, we see that $M_1(f) \geqslant M_1(f_1)\geqslant M_1(f_2) \geqslant \ldots$.
+By Claim~\ref{claim::LexWellOrder}, the sequence cannot be strictly decreasing and there is $r_1$ such that $M_1(f_{r_1}) = M_1(f_{r_1+1})=\ldots$.
+We denote this common monomial by $m_1$.
+Since the sequence of reductions is infinite, there must exist the second monomial in all polynomials $f_i$.
+By Claim~\ref{claim::MkReduct} in case $k = 2$, we have $m_1 > M_2(f_{r_1})\geqslant M_2(f_{r_1 + 1})\geqslant \ldots$.
+This descending chain of monomials cannot be strictly decreasing by Claim~\ref{claim::LexWellOrder}.
+Hence, there is $r_2 > r_1$ such that $m_1 > M_2(f_{r_2}) = M_2(f_{r_2+1})=\ldots$.
+We denote this common monomial by $m_2$ and get a sequence $m_1 > m_2$.
+
+Now we repeat the arguments and consider the third largest monomials, then find $m_3$ such that $m_1 > m_2 > m_3$.
+Proceeding in such a way we construct an infinite decreasing sequence of monomials $m_1 > m_2 > m_3 > \ldots > m_s> \ldots$.
+The latter contradicts Claim~\ref{claim::LexWellOrder}.
+This contradiction completes the proof.
+\end{proof}
+
