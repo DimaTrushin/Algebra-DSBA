@@ -1,0 +1,286 @@
+\ProvidesFile{lecture09.tex}[Lecture 9]
+
+
+\subsection{The Buchberger Criterion}
+
+There is another hidden problem.
+Is there at least one Gr\"obner basis?
+Or how to check if $G$ is a Gr\"obner basis?
+We are going to address the problem with the Buchberger criterion.
+I am going to postpone the proof until the next lecture and to focus on the criterion with its applications.
+
+\begin{definition}
+Suppose $F$ is a field, $f_1,f_2\in F[x_1,\ldots,x_n]$ are some nonzero polynomials, and we are given a lexicographical order on monomials.
+Assume that $f_1 = c_1 m_1 + f'_1$, where $c_1m_1$ is the leading term, and $f_2 = c_2 m_2 + f'_2$, where $c_2m_2$ is the leading term.
+Let $m$ be the least common multiple of $m_1$ and $m_2$, then $m = m_1 t_1 = m_2 t_2$.
+Then, the polynomial
+\[
+S_{f_1\,f_2} = c_2t_1 f_1 - c_1 t_2 f_2 = c_2t_1 f'_1 - c_1 t_2 f'_2
+\]
+is called S-polynomial of $f_1$ and $f_2$.
+\end{definition}
+
+
+\begin{example}
+\label{example::SPoly}
+Consider $\mathbb Q[x, y, z]$, $f_1 = xy - 1$, $f_2 = yz - 1$, and $\operatorname{Lex}(x, y, z)$ is the order.
+Then, the leading terms are $m_1 = xy$ and $m_2 = yz$ and the least common multiple is $xyz = m_1 z = m_2 x$.
+ Then,
+\[
+S_{f_1\,f_2} = z f_1 - x f_2 = z(xy - 1) - x(yz - 1) = x-z
+\]
+\end{example}
+
+
+\begin{claim}
+[The Buchberger criterion]
+Suppose $F$ is a field, we are given a lexicographical order on monomials in $n$ variables, and $G\subseteq F[x_1,\ldots,x_n]\setminus\{0\}$ is any set.
+Then, the following conditions are equivalent
+\begin{enumerate}
+\item $G$ is a Gr\"obner basis.
+
+\item For every $g_1,g_2\in G$, $S_{g_1\,g_2}$ is reducible to zero with respect to $G$.%
+\footnote{There is at least one way to reduce each S-polynomial to zero.}
+\end{enumerate}
+\end{claim}
+
+\begin{remark}
+In Example~\ref{example::SPoly}, we see that the S-polynomial of $f_1$ and $f_2$ does not reduce to zero with respect to $\{f_1, f_2\}$.
+Hence, the set is not a Gr\"obner basis.
+\end{remark}
+
+There is a special case ensuring that an S-polynomial will always reduce to zero.%
+\footnote{There is one additional trick but it is quite complicated and not worth mentioning.}
+
+\begin{claim}
+Suppose $F$ is a field, $g_1,g_2\in F[x_1,\ldots,x_n]\setminus\{0\}$, and we are given a lexicographical order.
+Assume that the leading monomials of $g_1$ and $g_2$ are coprime.
+Then, $S_{g_1\,g_2}$ reduces to zero with respect to $\{g_1,g_2\}$.
+\end{claim}
+\begin{proof}
+Suppose $g_1 = c_1 m_1 + g_1'$ and $g_2 = c_2 m_2 + g_2'$, where $m_i$ is the leading monomial of $g_i$, $c_i$ is the leading coefficient of $g_i$ and $g_i'$ is the tail of $g_i$.
+Since $m_1$ and $m_2$ are coprime the $S$ polynomial of $g_1$ and $g_2$ is
+\[
+S_{g_1\,g_2} = c_2m_2 g_1 - c_1 m_1 g_2 = c_2m_2 (c_1 m_1 + g_1') - c_1 m_1 (c_2 m_2 + g_2') = c_2m_2 g_1' - c_1 m_1 g_2'
+\]
+Now we use equality $c_i m_i = g_i - g_i'$ and get
+\[
+S_{g_1\,g_2} = c_2m_2 g_1' - c_1 m_1 g_2' = (g_2 - g_2')g_1' - (g_1 - g_1')g_2' = g_2' g_1 - g_1'g_2
+\]
+So, we expressed the S-polynomial in the form $a g_1 + b g_2$ such that each monomial of $a$ is strictly smaller than $m_2$ and each monomial of $b$ is strictly smaller than $m_1$.
+
+Now the goal is to show that the polynomial $a g_1 + b g_2$ is either zero or we can reduce it at least once with $\{g_1, g_2\}$.
+In order to do that, we show that the leading monomial $M(a g_1 + b g_2)$ is either $M(a g_1)$ or $M(bg_2)$.
+If $M(a g_1)> M(bg_2)$, then $M(a g_1)$ is the leading monomial of $a g_1 + b g_2$.
+If $M(a g_1) < M(bg_2)$, then $M(bg_2)$ is the leading monomial of $a g_1 + b g_2$.
+So, we may assume that $M(a g_1) = M(bg_2)$.
+However, $m_1 = M(g_1)$ divides $M(a g_1)$ and $m_2 = M(g_2)$ divides $M(b g_2)$.
+Since the $m_1$ and $m_2$ are coprime, $m_1 m_2$ divides $M(a g_1) = M(a) M(g_1) = M(a) m_1$.
+Therefore $m_2$ divides $M(a)$.
+This contradicts to the fact that all monomials of $a$ are smaller then $m_2$.
+Hence, $a$ must be zero.
+The same argument shows that $b$ is zero also.
+Now assume that $a g_1 + b g_2$ is not zero.
+Then its leading monomial is either $M(a) m_1$ or $M(b) m_2$.
+In either case, it is reducible with respect to $g_1$ or $g_2$.
+
+Let us go back to the S-polynomial of $g_1$ and $g_2$.
+We rewrote the S-polynomial as follows $a g_1 + b g_2$ such that monomials of $a$ are smaller than $m_2$ and monomials of $b$ are smaller than $m_1$.
+In the previous paragraph we showed that the leading monomial of $a g_1 + b g_2$ is either $M(a) m_1$ or $M(b) g_2$.
+Without loss of generality, we may assume that the leading term is $M(a) m_1$.
+Let us reduce the leading term using $g_1$.
+\[
+S_{g_1, g_2}\stackrel{f}{\longrightarrow} a g_1 + b g_2 - C(a) M(a) g_1 = (a - C(a) M(a)) g_1 + b g_2
+\]
+As we can see, the result of reduction is also a polynomial of the form $a g_1 + b g_2$ such that all monomials of $a$ are smaller than $m_2$ and all monomials of $b$ are smaller than $m_1$.
+Hence, we can repeat the reduction process.
+However, by Claim~\ref{claim::ReductFin} the process must terminate.
+But the latter means that the result of the reduction is zero (otherwise we would be able to proceed with the reduction).
+This completes the proof.
+\end{proof}
+
+\begin{example}
+Suppose we are given $\mathbb Q[x, y, z]$ with $\operatorname{Lex}(x, y, z)$, $g_1 = x^2 y - z$, and $g_2 = z^2 + 1$.
+Then the leading monomials $M(g_1) = x^2 y$ and $M(g_2) = z^2$ are coprime.
+Hence, their S-polynomial reduces to zero with respect to $\{g_1,g_2\}$.
+We can check this manually, this is not hard.
+But it is much easier to apply the claim and avoid computation at all.
+\end{example}
+
+
+\subsection{Ideals in polynomial rings}
+
+It turns out that a lot of problems about polynomials can be solved using ideals.
+Hence, it is worth talking about ideals in a polynomial ring in several variables for a bit.
+
+\begin{definition}
+Suppose $F$ is a field and we are given a finite set of polynomials $g_1,\ldots,g_k\in F[x_1,\ldots,x_n]$.
+Then the set
+\[
+(g_1,\ldots,g_k) = \{g_1 h_1 + \ldots + g_k h_k\mid h_1,\ldots,h_k\in F[x_1,\ldots,x_n]\}
+\]
+is an ideal of $F[x_1,\ldots,x_n]$ and is called the ideal generated by $g_1,\ldots,g_k$.
+If take $G = \{g_1,\ldots,g_k\}$, then the ideal $(g_1,\ldots,g_k)$ is also denoted by $(G)$ for short.
+\end{definition}
+
+There is a nontrivial result saying that every ideal of $F[x_1,\ldots,x_n]$ is generated by a finite set.
+The result was obtained by Hilbert and is known as the Hilbert basis theorem.
+
+\begin{claim}
+[The Hilbert Basis Theorem]
+Suppose $F$ is a field and $I\subseteq F[x_1,\ldots,x_n]$ is an ideal.
+Then there are polynomials $g_1,\ldots,g_k\in F[x_1,\ldots,x_n]$ such that $I = (g_1,\ldots,g_k)$.
+\end{claim}
+
+If we want to solve problems about ideals effectively, we need to generate the ideals by Gr\"obner bases.
+Hence, we need to solve the following problem.
+Suppose an ideal $I$ is generated by $g_1,\ldots,g_k$ and we fix a lexicographical order.
+It may happen that the initial set $\{g_1,\ldots,g_k\}$ is not a Gr\"obner basis.
+Hence, we want to replace it by a different set $G$ such that $G$ is a Gr\"obner basis and generates $I$, that is, $I = (G)$.
+Additionally, we want $G$ to be finite, otherwise it is almost useless from the effectiveness point of view.
+The latter problem can be solved by the Buchberger algorithm.
+
+
+\paragraph{The Buchberger Algorithm}
+
+As usual, we have a field $F$, a polynomial ring $F[x_1,\ldots,x_n]$, and we are given a lexicographical order on monomials.
+
+\paragraph{Input}
+
+A finite set of polynomials $G = \{g_1,\ldots,g_k\}\subseteq F[x_1,\ldots,x_n]$.
+
+\paragraph{Output}
+
+A finite set of polynomials $G_0\subseteq F[x_1,\ldots,x_n]$ such that
+\begin{enumerate}
+\item $G_0$ is a Gr\"obner basis.
+
+\item $(G) = (G_0)$.
+\end{enumerate}
+
+\paragraph{Algorithm}
+
+\begin{enumerate}
+\item At the beginning we initialize $G_0 = G$.
+
+\item For each $g_i,g_j\in G_0$ we compute $S_{g_i\,g_j}$ and reduce it by $G_0$ to a remainder $S_{g_i\,g_j}\stackrel{G_0}{\rightsquigarrow}r_{ij}$.
+
+\item If all $r_{ij}$ are zero, then $G_0$ is the required Gr\"obner basis.
+If not, then we update $G_0$ to be $G_0\cup \{r_{ij}\mid r_{ij} \neq 0\}$ and repeat the step~(2).
+\end{enumerate}
+
+If we want to show that the algorithm works, then we need to show several things: 1) it halts at a finite step, 2) the set $G_0$ is finite, 3) the resulting set $G_0$ is a Gr\"obner basis, 4) the resulting set generates the same ideal as $G$.
+The most difficult item is the first one.
+I am going to postpone the proof until the next lecture and explain all the other items.
+
+2) Suppose the loop in the algorithm worked $n$ times.
+Then, we constructed a set $G_1$ from the set $G$, then the set $G_2$, next $G_3$ and so on.
+At the end we terminated at the set $G_n$.
+As you can see at each step the set $G_k$ is obtained from the set $G_{k-1}$ by adding finitely many polynomials.
+Hence, all sets $G_k$ are finite.
+In particular, the final set $G_0 = G_n$ is finite.
+
+3) Since algorithm terminates on $G_n$, all S-polynomials of elements of $G_n$ reduces to zero with respect to $G_n$.
+Hence, the Buchberger Criterion shows that $G_n$ is a Gr\"obner basis.
+
+4) We need to show that $(G) = (G_n)$.
+It is enough to show that on each step $(G_{k-1}) = (G_k)$.
+But $G_k = G_{k-1} \cup \{r_{ij}\mid r_{ij}\neq 0\}$.
+In particular, $G_{k-1}\subseteq G_k$ and thus $(G_{k-1}) \subseteq (G_k)$.
+In order to show the other inclusion it is enough to show that each $r_{ij}$ belongs to $(G_{k-1})$.
+Indeed, for each $g_i,g_j\in G_{k-1}$ the S-polynomial $S_{g_i\,g_j}$ is of the form $c_2t_1 g_i - c_1 t_2 g_j\in (G_{k-1})$ by definition.
+Since, $S_{g_i\,g_j}\stackrel{G_{k-1}}{\rightsquigarrow}r_{ij}$.
+This means there exist a sequence of reductions: $S_{g_i\,g_j}\stackrel{g_1'}{\longrightarrow}f_1\stackrel{g_2'}{\longrightarrow}f_2\stackrel{g_3'}{\longrightarrow}\ldots\stackrel{g_k'}{\longrightarrow}f_k = r_{ij}$.
+Hence, it is enough to show that if $f\in (G)$, $g\in G$, and $f\stackrel{g}{\longrightarrow}f'$, then $f'\in (G)$.
+But this is clear by the definition, because $f' = f - \lambda t g$ for some $\lambda \in F$ and a monomial $t$.
+
+\subsection{Rings of remainders}
+
+Suppose $F$ is a field, we consider $F[x_1,\ldots,x_n]$, and a lexicographical order is fixed.
+Suppose $G = \{g_1,\ldots,g_k\}\subseteq F[x_1,\ldots,x_n]$ and $I = (G)$.
+We compute a Gr\"obner basis of $I$ and denote it by $G_0$.
+Hence, we also have $I = (G_0)$.
+
+Now I want to define the ring of remainders using the Gr\"obner basis $G_0$ as follows.
+As a set
+\[
+F[x_1,\ldots,x_n]/(G_0) = \{f\in F[x_1,\ldots,x_n]\mid f \text{ is a remainder with respect to }G_0\}
+\]
+The addition is the usual addition of polynomials.
+The multiplication is defined as follows: suppose $f, f'\in F[x_1,\ldots,x_n]/(G_0)$, we compute the usual product of $f$ and $f'$ as polynomials and reduce it with respect to $G_0$, that is $f f' \stackrel{G_0}{\rightsquigarrow} r$.
+Then, we define $f \cdot f' = r$ in $F[x_1,\ldots,x_n]/(G_0)$.
+One can show that we have defined a commutative ring.
+
+\begin{remarks}
+By the definition of the remainder ring $F[x_1,\ldots,x_n]/(G_0)$ its construction depends on the choice of the Gr\"obner basis $G_0$.
+In particular, it depends on the choice of the lexicographical order.
+It turns out that the remainder ring depends only on the choice of the ideal $I = (G_0)$ in the following sense: 
+\begin{enumerate}
+\item Let us fix a lexicographical order and find two different Gr\"obner bases of the ideal $I$, say, $G_1$ and $G_2$.
+Suppose $f\in F[x_1,\ldots,x_n]$ and $f\stackrel{G_1}{\rightsquigarrow}r_1$ and $f\stackrel{G_2}{\rightsquigarrow}r_2$, where $r_1$ and $r_2$ are remainders with respect to $G_1$ and $G_2$.
+Then, one can show that $r_1 = r_2$.
+In particular, the sets of remainders with respect to $G_1$ and $G_2$ are the same
+\[
+F[x_1,\ldots,x_n]/(G_1) = F[x_1,\ldots,x_n]/(G_2)
+\]
+Moreover, this also implies that the operations are the same.
+Hence, the rings for different Gr\"obner bases are exactly the same.
+
+\item Now suppose that we take two different lexicographical orders $\Lex_1$ and $\Lex_2$ and compute Gr\"obner bases $G_1$ and $G_2$ of $I$ corresponding to $\Lex_1$ and $\Lex_2$, respectively.
+Then, the sets of remainders can be different.
+However, the rings of remainders will be isomorphic.
+\[
+F[x_1,\ldots,x_n]/(G_1) \simeq F[x_1,\ldots,x_n]/(G_2)
+\]
+The isomorphisms are given by the following rules.
+If $f\in F[x_1,\ldots,x_n]/(G_1)$, we compute its remainder with respect to $G_2$, that is $f\stackrel{G_2}{\rightsquigarrow}f'$.
+Then the map $f \mapsto f'$ is an isomorphism of rings.
+The inverse map is given as follows.
+We take $g\in F[x_1,\ldots,x_n]/(G_2)$ and compute its remainder with respect to $G_1$, that is  $g\stackrel{G_1}{\rightsquigarrow}g'$.
+Then, the map $g\mapsto g'$ is the inverse isomorphism.
+\end{enumerate}
+\end{remarks}
+
+\subsection{Membership problem and variable elimination}
+
+There are two very popular problems that can be solved using Gr\"obner bases.
+I want to discuss them both.
+
+\paragraph{Membership problem}
+
+Suppose we have a field $F$, a polynomial ring $F[x_1,\ldots,x_n]$, an ideal $I = (g_1,\ldots,g_k)$ in the polynomial ring, and a polynomial $f$.
+The question is how to check if $f$ belongs to $I$.
+Here is an algorithm.
+\begin{enumerate}
+\item Fix a lexicographical order $\Lex$.
+
+\item Find a Gr\"obner basis $G$ of $I$.
+
+\item Compute the remainder of $f$ with respect to $G$, that is $f\stackrel{G}{\rightsquigarrow}r$.
+
+\item The polynomial $f$ belongs to $I$ if and only if $r = 0$.
+\end{enumerate}
+
+It should be noted that if $G$ is not a Gr\"obner basis, then only a half of the algorithm works correctly.
+If the remainder $r$ is zero, then $f$ is guaranteed to be in $I$.
+The proof is similar to the one we used to show that the Buchberger algorithm is correct.
+However, in case the remainder $r$ is not zero the polynomial $f$ may still be in $I$.
+Indeed, in Example~\ref{example::SPoly} S-polynomial $S_{f_1\,f_2}$ belongs to the ideal $(f_1, f_2)$.
+However, $S_{f_1\,f_2}$ is not reducible with respect to $\{f_1,f_2\}$.
+
+\paragraph{Variable elimination}
+
+Suppose we have a field $F$, a polynomial ring $F[x_1,\ldots,x_n, x_{k+1}, \ldots, x_n]$, and an ideal $I = (g_1,\ldots,g_k)$ in the polynomial ring.
+The question is how to compute $I\cap F[x_1,\ldots,x_k]$.
+This means, we want to eliminate all polynomials from $I$ depending on $x_{k+1},\ldots,x_n$.
+Here is an algorithm.
+\begin{enumerate}
+\item  Fix a lexicographical order such that $x_1,\ldots,x_k < x_{k+1},\ldots,x_n$.
+The ordering of $x_1,\ldots,x_k$ or $x_{k+1},\ldots,x_n$ does not matter.
+
+\item Compute a Gr\"obner basis $G_0$ of $I$.
+
+\item Define $G = \{g\in G_0\mid g \text{ does not depend on } x_{k+1},\ldots,x_n\}$.
+
+\item Then $G$ is a Gr\"obner basis of $I\cap F[x_1,\ldots,x_k]$ with respect to the lexicographical order given by the chosen ordering of $x_1,\ldots,x_k$.
+\end{enumerate}
