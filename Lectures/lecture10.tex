@@ -1,0 +1,295 @@
+\ProvidesFile{lecture10.tex}[Lecture 10]
+
+
+\subsection{Proofs}
+
+Now I have a lot of debts to pay.
+The main one is to prove the Buchberger criterion.
+The poof consists of two steps: the first one is to prove the Diamond Lemma and the second one is to derive the criterion from the lemma.
+
+\begin{claim}
+[The Diamond Lemma]
+Suppose $F$ is a field, we are given a lexicographical order on monomials in $n$ variables, and $G\subseteq F[x_1,\ldots,x_n]\setminus\{0\}$ is any set.
+Then, the following conditions are equivalent
+
+\begin{tabular}{cc}
+{
+\parbox{12cm}{
+\begin{enumerate}
+\item $G$ is a Gr\"obner Basis.
+
+\item for any polynomial $f\in F[x_1,\ldots,x_n]$ and any elementary reductions $f\stackrel{g_1}{\longrightarrow}f_1$ and $f\stackrel{g_2}{\longrightarrow}f_2$ (where $g_1,g_2\in G$) there is $f'\in F[x_1,\ldots,x_n]$ such that $f_1\stackrel{G}{\rightsquigarrow}f'$ and $f_2\stackrel{G}{\rightsquigarrow}f'$.%
+\footnote{Here, we assume that there is at least one reduction of $f_1$ to $f'$ and at least one reduction of $f_2$ to $f'$.}
+\end{enumerate}
+}}&{
+\parbox{4cm}{
+\[
+\xymatrix@R=15pt@C=15pt{
+	{}&{\textcolor{red}{f}}\ar[dl]_{g_1}\ar[dr]^{g_2}&{}\\
+	{\textcolor{OliveGreen}{f_1}}\ar[d]&{}&{\textcolor{OliveGreen}{f_2}}\ar[d]\\
+	{}\ar@{}[d]|{\vdots}&{}&{}\ar@{}[d]|{\vdots}\\
+	{}\ar[dr]&{}&{}\ar[dl]\\
+	{}&{f'}&{}\\
+}
+\]
+}
+}
+\end{tabular}
+\end{claim}
+\begin{proof}
+(1)$\Rightarrow$(2).
+Let $r_1$ be a remainder of $f_1$ with respect to $G$ and $r_2$ be a remainder of $f_2$ with respect to $G$.
+In particular $f_1 \stackrel{G}{\rightsquigarrow} r_1$ and $f_2 \stackrel{G}{\rightsquigarrow} r_2$.
+By definition $r_1$ and $r_2$ are also remainders of $f$.
+Since $G$ is a Gr\"obner basis, all remainders of $f$ are the same.
+Hence, $r_1 = r_2$.
+Hence, $f' = r_1 = r_2$ satisfies the requirements.
+
+(2)$\Rightarrow$(1).
+We need to show that each polynomial $f\in F[x_1,\ldots,x_n]$ has only one remainder with respect to $G$.
+Suppose the contrary holds and there is a polynomial $f$ with at least two different remainders.
+Let us consider all possible elementary reductions of $f$ with respect to elements of $G$.
+There are two possible cases:
+\begin{enumerate}
+\item All elementary reductions produce a polynomial with a unique remainder.
+
+\item There is at least one reduction leading to a polynomial with several distinct remainders.
+\end{enumerate}
+I want to replace $f$ by a polynomial satisfying the first property.
+If $f$ already satisfies the property, we are done.
+Suppose that there is at least one reduction leading to $f_1$ such that $f_1$ has several distinct remainders.
+If $f_1$ satisfies property (1), we replace $f$ by $f_1$.
+Otherwise, there is an elementary reduction of $f_1$ leading to $f_2$ such that $f_2$ has several distinct remainders.
+Hence, we get a sequence of reductions
+\[
+f\stackrel{g_1}{\longrightarrow}f_1\stackrel{g_2}{\longrightarrow}f_2\stackrel{g_3}{\longrightarrow}f_3\stackrel{g_4}{\longrightarrow}\ldots
+\]
+By Claim~\ref{claim::ReductFin}, the sequence is finite.
+Hence, at some finite step, we get a polynomial $f_k$ such that it has several distinct remainders and satisfies property~(1) above.
+We can demonstrate the process on the diagram below.
+The red color means that the polynomial has several different remainders.
+The green color means that the polynomial has a unique remainder.
+\[
+\xymatrix@R=15pt@C=15pt{
+	{}&{}&{\textcolor{red}{f}}\ar[dll]\ar[d]\ar[dr]\ar[drrr]&{}&{}&{}\\
+	{\textcolor{red}{*}}&{\ldots}&{\textcolor{red}{f_1}}\ar[dll]\ar[d]\ar[dr]\ar[drrr]&{\textcolor{OliveGreen}{*}}&{\ldots}&{\textcolor{OliveGreen}{*}}\\
+	{\textcolor{red}{*}}&{\ldots}&{\textcolor{red}{f_2}}\ar[dll]\ar[d]\ar[dr]\ar[drrr]&{\textcolor{OliveGreen}{*}}&{\ldots}&{\textcolor{OliveGreen}{*}}\\
+	{}&{\ldots}&{}\ar@{}[d]|(.3){\vdots}&{}&{\ldots}&{}\\
+	{}&{}&{\textcolor{red}{f_k}}\ar[dll]\ar[d]\ar[dr]\ar[drrr]&{}&{}&{}\\
+	{\textcolor{OliveGreen}{*}}&{\ldots}&{\textcolor{OliveGreen}{*}}&{\textcolor{OliveGreen}{*}}&{\ldots}&{\textcolor{OliveGreen}{*}}\\
+}
+\]
+How, we may assume that $f$ has at least two different remainders with respect to $G$ but all elementary reductions of $f$ produce polynomials with a unique remainder.
+Suppose that $f  \stackrel{G}{\rightsquigarrow}  r_1$ and $f  \stackrel{G}{\rightsquigarrow}  r_2$ are two different remainders.
+By definition, there are $g_1, g_2\in G$ and polynomials $f_1, f_2\in F[x_1,\ldots,x_n]$ such that 
+\[
+f  \stackrel{g_1}{\longrightarrow}f_1  \stackrel{G}{\rightsquigarrow} r_1
+\quad\text{and}\quad
+f  \stackrel{g_2}{\longrightarrow}f_2  \stackrel{G}{\rightsquigarrow} r_2
+\]
+From the other hand, by the hypothesis of the claim, there is $f'$ such that $f_1$ and $f_2$ are reducible to $f'$ by $G$.
+Let us reduce it further to a remainder $r'$.
+The diagram below summarizes what has been done:
+\[
+\xymatrix@R=15pt@C=15pt{
+	{}&{}&{\textcolor{red}{f}}\ar[dl]_{g_1}\ar[dr]^{g_2}&{}&{}\\
+	{}&{\textcolor{OliveGreen}{f_1}}\ar[dl]\ar[d]&{}&{\textcolor{OliveGreen}{f_2}}\ar[d]\ar[dr]&{}\\
+	{}\ar@{}[d]|{\vdots}&{}\ar@{}[d]|{\vdots}&{}&{}\ar@{}[d]|{\vdots}&{}\ar@{}[d]|{\vdots}\\
+	{}\ar[d]&{}\ar[dr]&{}&{}\ar[dl]&{}\ar[d]\\
+	{r_1}&{}&{r'}&{}&{r_2}\\
+}
+\]
+By the choice of $f$, $r_1 \neq r_2$ are two different remainders.
+From the other hand, polynomials $f_1$ and $f_2$ have their own unique remainder.
+Hence, every remainder of $f_1$ is the same.
+But $r_1$ and $r'$ are remainders of $f_1$.
+Therefore, $r_1 = r'$.
+By the same argument $r_2 = r'$.
+Hence $r_1 = r' = r_2$, a contradiction.
+This contradiction completes the proof.
+\end{proof}
+
+Now I need some simple auxiliary results.
+
+\begin{claim}
+\label{claim::ReductionProps}
+Suppose $F$ is a field, we are given a polynomial ring $F[x_1,\ldots,x_n]$, and a lexicographical order is fixed.
+\begin{enumerate}
+\item If $f\stackrel{G}{\rightsquigarrow}f'$ and $m$ is a monomial, then $mf \stackrel{G}{\rightsquigarrow}mf'$.
+
+\item If $f_1 - f_2 \stackrel{G}{\rightsquigarrow}0$, then $f_1$ and $f_2$ can be reduced to the same element with respect to $G$, that is, there is a polynomial $r$ such that $f_1\stackrel{G}{\rightsquigarrow}r$ and $f_2\stackrel{G}{\rightsquigarrow}r$.
+\end{enumerate}
+\end{claim}
+\begin{proof}
+1) This one is simple.
+If we apply a sequence of elementary reductions to $f$, just multiply all the formulas by $m$ and we get the required reduction for $mf$.
+
+2) Suppose $f_1 - f_2 \stackrel{g_1}{\longrightarrow}\varphi_1 \stackrel{g_2}{\longrightarrow}\ldots  \stackrel{g_k}{\longrightarrow}\varphi_k = 0$.
+We will prove the result using induction on $k$.
+
+In case $k = 0$.
+We have $f_1 - f_2 = 0$, hence $f_1 = f_2$ and there is nothing to prove.
+Let us assume that $k > 0$.
+We consider the first step $f_1 - f_2 \stackrel{g}{\longrightarrow}\varphi$.
+Suppose that a monomial $m$ is reduced in this reduction.
+Let us isolate the term with $m$ in $f_1$ and $f_2$, hence we can write $f_1 = a m + h_1$ and $f_2 = bm + h_2$, where $a,b\in F$ and monomial $m$ does not appear in $h_1$ and $h_2$.
+Suppose $g = c_g m_g + g_0$, where $c_g$ is the leading coefficient and $m_g$ is the leading monomial, and $m = t m_g$.
+Then the reduction looks like this
+\[
+f_1 - f_2 \stackrel{g}{\longrightarrow}(a-b)m + h_1 -h_2 - \frac{a-b}{c_g}t g = \varphi
+\]
+Since monomial $m$ appears in $f_1$ and $f_2$, we may apply the reduction of monomial $m$ with respect to $g$ to each of these polynomials
+\[
+f_1 \stackrel{g}{\longrightarrow}f_1'=f_1 - \frac{a}{c_g}tg,\quad
+f_2 \stackrel{g}{\longrightarrow}f_2'=f_2 - \frac{b}{c_g}tg
+\]
+It is clear that $\varphi = f_1' - f_2'$.
+Hence, we may apply induction to $f_1'-f_2'$ and get the result.
+\end{proof}
+
+\begin{claim}
+[The Buchberger criterion]
+Suppose $F$ is a field, we are given a lexicographical order on monomials in $n$ variables, and $G\subseteq F[x_1,\ldots,x_n]\setminus\{0\}$ is any set.
+Then, the following conditions are equivalent
+\begin{enumerate}
+\item $G$ is a Gr\"obner basis.
+
+\item For every $g_1,g_2\in G$, $S_{g_1\,g_2}$ is reducible to zero with respect to $G$.%
+\footnote{There is at least one way to reduce each S-polynomial to zero.}
+\end{enumerate}
+\end{claim}
+\begin{proof}
+(1)$\Rightarrow$(2).
+Suppose $g_1,g_2\in G$, $g_1 = c_1 m_1 + g'_1$, $g_2 = c_2m_2 + g'_2$, and the least common multiple of $m_1$ and $m_2$ is $m = t_1 m_1 = t_2 m_2$.
+Assume that $f = c_2 t_1 g_1$.
+Then $f$ is reduced to zero by $g_1$.
+From the other hand, $f$ is reduced to $S_{g_1\,g_2}$ by $g_2$.
+Indeed,
+\[
+f\stackrel{g_2}{\longrightarrow} f' = c_2 t_1 g_1 - c_1 t_2 g_2 = S_{g_1\,g_2}
+\]
+Hence, the remainder of $f'$ with respect to $G$ coincides with the remainder of $f$.
+But $f$ reduces to zero and $G$ is a Gr\"obner basis.
+Therefore $f'$ also reduces to zero.
+
+
+(2)$\Rightarrow$(1).
+Now, we need to show that $G$ is a Gr\"obner basis.
+In order to do that, we will check the second condition of the Diamond Lemma.
+Suppose we have an arbitrary $f\in F[x_1,\ldots,x_n]$ and two reductions $f \stackrel{g_1}{\longrightarrow}f_1$ and $f\stackrel{g_2}{\longrightarrow}f_2$, where $g_1,g_2\in G$.
+We need to reduce $f_1$ and $f_2$ to the same polynomial $f'$ with respect to $G$.
+Suppose $g_1 = c_1 m_1 + g_1'$ and $g_2 = c_2 m_2 + g_2'$, where $m_1$ and $m_2$ are the leading monomials of $g_1$ and $g_2$ respectively.
+Suppose the reductions are $f_1 = f - a_1 t_1 g_1$ and $f_1 = f - a_2 t_2 g_2$, where $a_1$ and $a_2$ are coefficients and $t_1$ and $t_2$ are monomials.
+Claim~\ref{claim::ReductionProps} implies that it is enough to show that $f_1 - f_2$ reduces to zero with respect to $G$, that is $a_2t_2g_2 - a_1 t_1 g_1 \stackrel{G}{\rightsquigarrow}0$.
+
+Let us consider the leading monomials of $t_1g_1$ and $t_2 g_2$.
+There are two cases: either the monomials are the same or they are different.
+Let us consider the second option first.
+
+\paragraph{case 1}
+
+We may assume that $M(t_2 g_2) > M(t_1 g_1)$.
+Then the difference $a_2t_2g_2 - a_1 t_1 g_1$ has $M(t_2 g_2)$ as its leading monomial.
+Hence, we may reduce this monomial with respect to $g_2$, that is
+\[
+a_2t_2g_2 - a_1 t_1 g_1\stackrel{g_2}{\longrightarrow} a_2t_2g_2 - a_1 t_1 g_1 - a_2t_2 g_2 = - a_1 t_1 g_1 \stackrel{g_1}{\longrightarrow} 0
+\]
+
+\paragraph{case 2}
+
+Now we consider the case $m = M(t_1 g_1) = M(t_2 g_2)$.
+Let us compute the leading coefficients of the polynomials $a_1t_1 g_1$ and $a_2 t_2 g_2$.
+The coefficients are $a_1 c_1$ and $a_2 c_2$, respectively.
+Now, there are two different subcases: either the leading coefficients are the same or they are different.
+
+\paragraph{case 2a}
+
+Suppose $a_2 c_2 = a_1 c_1$.
+Then we have $\lambda = a_2 / c_1 = a_1 / c_2$.
+Let us show that $a_2t_2g_2 - a_1 t_1 g_1$ is proportional to the S-polynomial of $g_1$ and $g_2$.
+Let $d$ be the greatest common divisor of $t_1$ and $t_2$.
+Then, $t_1 = d t_1'$ and $t_2 = d t_2'$.
+Then,
+\begin{gather*}
+a_2t_2g_2 - a_1 t_1 g_1 = \lambda d \left(c_1 t_2' g_2 - c_2 t_1' g_1\right) = \lambda d S_{g_2\,g_1}
+\end{gather*}
+By the hypothesis of the claim $S_{g_2\, g_1}$ reduces to zero.
+Then by Claim~\ref{claim::ReductionProps} item~(1), $\lambda d S_{g_1\,g_1}$ also reduces to zero.
+
+\paragraph{case 2b}
+
+Now we consider the case $a_2 c_2 \neq a_1 c_1$.
+In this case the monomial $m = M(t_2 g_2) = M(t_1 g_1)$ does not vanish in the difference $a_2t_2g_2 - a_1 t_1 g_1$.
+Let us reduce it with respect to $g_1$, that is
+\[
+a_2t_2g_2 - a_1 t_1 g_1 \stackrel{g_1}{\longrightarrow}
+a_2t_2g_2 - a_1 t_1 g_1 - \frac{a_2 c_1 - a_1 c_1}{c_1}t_1 g_1 = a_2 t_2 g_2 - \frac{a_2 c_2}{c_1}t_1 g_1
+\]
+But now we are in the \textbf{case 2a} because $a_2 c_2 = \frac{a_2 c_2}{c_1}c_1$.
+Hence the latter polynomial reduces to zero by the previous case and we are done.
+\end{proof}
+
+\begin{claim}
+[The Dickson Lemma]
+Suppose we are given a sequence of monomials on variables $x_1,\ldots,x_n$:
+\[
+m_1,m_2,\ldots, m_k,\ldots
+\]
+such that $m_i \mathbin{\not|} m_j$ whenever $i < j$.
+Then the sequence must be finite.
+\end{claim}
+\begin{proof}
+We will prove the claim by induction on the number of variables $n$.
+If $n = 1$, then we have
+\[
+x_1^{d_1}, x_1^{d_2},\ldots, x_1^{d_k}
+\]
+Since the monomials on the left do not divide the monomials on the right, the sequence $d_k$ must be strictly decreasing and hence finite.
+
+Now we would like to prove, that if the result holds for $n-1$ it is true for $n$.
+Assume the claim is wrong and there is an infinite sequence with the given property.
+Since $m_1$ does not divide $m_i$ there is a variable $x_{s_i}$ such that the degree of $m_i$ in $x_{s_i}$ is strictly smaller then the degree of $m_1$ in $x_{s_i}$.
+Since the sequence of $x_{s_i}$ is infinite but the set of variables is finite, one of these variables appears infinitely many times.
+Let us assume that this variable is $x_n$.
+
+Hence, passing to a subsequence, we may assume that the degree of $m_k$ in $x_n$ is strictly smaller than that of $m_1$.
+So, the sequence is of the form
+\[
+m_1(x_1,\ldots,x_{n-1})x_n^{d_1}, m_2(x_1,\ldots,x_{n-1})x_n^{d_2},\ldots, m_k(x_1,\ldots,x_{n-1})x_n^{d_k}, \ldots
+\]
+and $d_k < d_1$ for all $k > 1$.
+Since the sequence $d_k$ is infinite and takes finitely many values (from $0$ to $d_1-1$), one of the values is achieved infinitely many times.
+
+Hence, passing to a subsequence we may assume that the degree of $x_n$ is constant and equals $d$.
+Thus, we may assume that the sequence is of the form
+\[
+m_1(x_1,\ldots,x_{n-1})x_n^{d}, m_2(x_1,\ldots,x_{n-1})x_n^{d},\ldots, m_k(x_1,\ldots,x_{n-1})x_n^{d}, \ldots
+\]
+But since the degree of $x_n$ is the same, the condition $m_i\mathbin{\not |} m_j$ implies that $m_i(x_1,\ldots,x_{n-1})\mathbin{\not |} m_j(x_1,\ldots,x_{n-1})$.
+Hence, we have an infinite sequence of monomials depending on $n-1$ variable such that $m_i\mathbin{\not |} m_j$ whenever $i < j$.
+This contradiction completes the proof.
+\end{proof}
+
+\begin{claim}
+The Buchberger algorithm terminates.
+\end{claim}
+\begin{proof}
+Let me recall the algorithm.
+We are given $F\subseteq F[x_1,\ldots, x_n]$ and a lexicographical ordering is fixed.
+We do the following steps:
+\begin{enumerate}
+\item $G = F$.
+
+\item For all $f, g\in F$ we compute $S_{f\,g}\stackrel{G}{\rightsquigarrow} r_{f\, g}$.
+If all the remainders are zero, the algorithm terminates.
+
+\item We set $G = G \cup \{r_{f\,g}\mid r_{f\,g}\neq 0\}$ and repeat from Step $2$.
+\end{enumerate}
+Let us assume that the algorithm never stops.
+Then on each step we add at least one polynomial $r_{f\, g}$.
+Suppose we added $r_1$ on the first loop, then we added $r_2$, then $r_3$, and so on.
+Then $r_k$ is reduced by all the polynomials $r_1,\ldots, r_{k-1}$.
+In particular, the leading monomial $M(r_k)$ is not divisible by the leading monomials $M(r_1), \ldots, M(r_{k-1})$.
+Hence, the sequence $M(r_1), M(r_2),\ldots, M(r_k),\ldots$ contradicts the Dickson Lemma.
+This contradiction completes the proof.
+\end{proof}
